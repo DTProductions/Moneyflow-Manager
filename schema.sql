@@ -47,8 +47,8 @@ CREATE INDEX exchanges_user_id ON exchanges(user_id);
 CREATE TABLE historical_rates(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     date TEXT NOT NULL,
-    BRL INTEGER,
-    EUR INTEGER,
-    GBP INTEGER
+    brl INTEGER,
+    eur INTEGER,
+    gbp INTEGER
 );
 CREATE UNIQUE INDEX historical_rates_date ON historical_rates(date);
