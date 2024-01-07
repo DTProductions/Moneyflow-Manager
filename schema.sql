@@ -43,7 +43,7 @@ CREATE INDEX exchanges_source_currency ON exchanges(source_currency);
 CREATE INDEX exchanges_destination_currency ON exchanges(destination_currency);
 CREATE INDEX exchanges_user_id ON exchanges(user_id);
 
--- Refers to how much a unit of 1 in the column currency is worth in USD
+-- Refers to how much 1 USD is worth in the currency each column refers to
 CREATE TABLE historical_rates(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     date TEXT NOT NULL,
