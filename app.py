@@ -1,7 +1,7 @@
-import flask
+from flask import Flask, render_template
 
-app = flask.Flask(__name__)
+app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "Hello, World!"
+    return render_template("login.html")
