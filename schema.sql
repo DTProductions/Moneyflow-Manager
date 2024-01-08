@@ -1,10 +1,9 @@
 CREATE TABLE users(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL,
+    email TEXT NOT NULL,
     hash TEXT NOT NULL,
-    salt TEXT NOT NULL
 );
-CREATE UNIQUE INDEX users_username ON users(username);
+CREATE UNIQUE INDEX users_email ON users(email);
 
 CREATE TABLE transactions(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
