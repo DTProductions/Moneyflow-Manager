@@ -78,3 +78,8 @@ html{
     outline: 0.075rem solid #00d6d6;
     outline-offset: 0;
 }
+@media screen and (max-width:350px) {
+    html{
+        font-size: 35px;
+    }
+}
