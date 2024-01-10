@@ -12,7 +12,7 @@ def login():
         password = request.form.get("password")
 
         if not (email and password):
-            return "Blank fields"
+            return render_template("error.html", code=400, message="Blank fields")
         
         with db_engine.begin() as conn:
             query = select(users_table.c["id","hash"]).where(users_table.c.email == email)
@@ -20,9 +20,9 @@ def login():
             result = result.first()
 
             if not result:
-                return "Email not registered"
+                return render_template("error.html", code=400, message="Email not registered")
             if not check_password_hash(result[1], password):
-                return "Wrong password"
+                return render_template("error.html", code=400, message="Wrong password")
             
             session["user_id"] = result[0]
             return redirect("/")
@@ -39,11 +39,11 @@ def register():
         confirmation = request.form.get("confirmation")
 
         if not (email and password and confirmation):
-            return "Blank fields"
+            return render_template("error.html", code=400, message="Blank fields")
         if email.count("@") != 1:
-            return "Invalid email"
+            return render_template("error.html", code=400, message="Invalid email")
         if password != confirmation:
-            return "Passwords didn't match"
+            return render_template("error.html", code=400, message="Passwords didn't match")
         
         with db_engine.begin() as conn:
             query = insert(users_table).values(email=email, hash=generate_password_hash(password))

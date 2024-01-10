@@ -1,0 +1,23 @@
+html{
+    font-size: 40px;
+    font-family: 'Roboto', sans-serif;
+    color: #063688;
+}
+body{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 0.01rem;
+}
+h1{
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 0
+}
+p{
+    font-size: 1rem;
+    font-weight: normal;
+    margin: 0;
+}
