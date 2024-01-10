@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy import insert
+from sqlalchemy import insert, select
 from dbschema import db_engine, users_table
 from flask_session import Session
 from datetime import timedelta
@@ -12,13 +12,36 @@ app.config["SESSION_PERMANENT"] = True
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=1)
 Session(app)
 
-@app.route("/", )
+@app.route("/")
 def index():
-    return render_template("login.html", page_title="login", form_title="Moneyflow Manager")
+    if not session.get("user_id"):
+        return redirect("/login")
+    else:
+        return "Logged in"
 
 @app.route("/login", methods=["GET","POST"])
 def login():
-    return render_template("login.html", page_title="login", form_title="Moneyflow Manager")
+    if request.method == "POST":
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        if not (email and password):
+            return "Blank fields"
+        
+        with db_engine.begin() as conn:
+            query = select(users_table.c["id","hash"]).where(users_table.c.email == email)
+            result = conn.execute(query)
+            result = result.first()
+
+            if not result:
+                return "Email not registered"
+            if not check_password_hash(result[1], password):
+                return "Wrong password"
+            
+            session["user_id"] = result[0]
+            return redirect("/")
+    else:    
+        return render_template("login.html", page_title="login", form_title="Moneyflow Manager")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -37,6 +60,6 @@ def register():
         with db_engine.begin() as conn:
             query = insert(users_table).values(email=email, hash=generate_password_hash(password))
             conn.execute(query)
-        return redirect("/")
+        return redirect("/login")
     else:
         return render_template("register.html", page_title="register", form_title="Register")
