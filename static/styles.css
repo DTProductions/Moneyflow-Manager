@@ -1,0 +1,85 @@
+html{
+    font-size: 40px;
+    font-family: 'Roboto', sans-serif;
+}
+.centered-body{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+.form-background{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #063688;
+    border-radius: 1rem;
+    width: 10rem;
+    height: 11rem;
+}
+.main-form{
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.form-item-text{
+    border-radius: 1.5rem;
+    border-width: 0;
+    width: 7.5rem;
+    height: 1rem;
+    padding: 0.2rem;
+    text-align: center;
+    color: #063688;
+    margin-top: 0.5rem;
+    font-weight: normal;
+    font-size: 0.35rem;
+}
+.form-item-text::placeholder{
+    color: #063688;
+}
+.form-item-text:focus{
+    outline: 0.075rem solid #A80093
+}
+.form-title{
+    color: white;
+    font-weight: bold;
+    font-size: 0.7rem;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+.form-button{
+    background-color: #00BF63;
+    border-width: 0;
+    width: 7.5rem;
+    height: 1.75rem;
+    margin-top: 0.5rem;
+    color: #00225B;
+    font-weight: normal;
+    font-size: 0.4rem;
+}
+.form-button:active{
+    background-color: #00a153;
+}
+.form-button:focus{
+    outline: 0.075rem solid #00d6d6;
+}
+.form-button.link{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    cursor: default;
+}
+.form-button.link:focus-visible{
+    outline: 0.075rem solid #00d6d6;
+    outline-offset: 0;
+}
+@media screen and (max-width:350px) {
+    html{
+        font-size: 35px;
+    }
+}

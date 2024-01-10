@@ -1,7 +1,7 @@
 CREATE TABLE users(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     email TEXT NOT NULL,
-    hash TEXT NOT NULL,
+    hash TEXT NOT NULL
 );
 CREATE UNIQUE INDEX users_email ON users(email);
 

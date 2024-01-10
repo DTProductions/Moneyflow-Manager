@@ -2,3 +2,5 @@
 __pycache__/
 /.python-version
 /moneyflow_manager.db
+flask_session/
+blueprints/__pycache__
