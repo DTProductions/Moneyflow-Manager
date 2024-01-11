@@ -6,6 +6,7 @@ body{
     margin: 0;
 }
 .top-bar{
+    font-size: 40px;
     height: 100px;
     background-color: #063688;
     display: flex;
@@ -16,11 +17,11 @@ body{
     align-items: center;
     text-decoration: none;
     color: white;
-    font-size: 0.5rem;
+    font-size: 0.5em;
     font-weight: bold;
     height: 100%;
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 0.3em;
+    padding-right: 0.3em;
     text-align: center;
     padding-bottom: auto;
 }
@@ -31,13 +32,37 @@ body{
 .top-bar.right{
     display: flex;
     flex-direction: row;
-    flex-grow: 4;
+    flex-grow: 1;
     justify-content: right;
     align-items: center;
-    margin-right: 40px;
-    /*column-gap: 20px;*/
+    margin-right: 1em;
 }
 .logo{
-    margin-top: 5px;
-    margin-left: 20px;
+    margin-top: 0.125em;
+    margin-left: 0.5em;
+    width: 4.5em;
+    height: 2.25em;
+}
+@media screen and (max-width: 738px) {
+    .top-bar{
+        font-size: 30px;
+        height: 75px;
+    }
+}
+@media screen and (max-width: 560px){
+    .logo{
+        width: 0;
+        height: 0;
+        margin: 0;
+    }
+    .top-bar.right{
+        justify-content: center;
+        margin-right: 0;
+    }
+}
+@media screen and (max-width: 344px) {
+    .top-bar{
+        font-size: 28px;
+        height: 70px;
+    }
 }
