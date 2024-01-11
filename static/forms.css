@@ -8,6 +8,13 @@ html{
     justify-content: center;
     height: 100vh;
     margin: 0;
+
+}
+.centered-form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
 }
 .form-background{
     display: flex;
@@ -81,5 +88,8 @@ html{
 @media screen and (max-width:350px) {
     html{
         font-size: 35px;
+    }
+    .centered-form{
+        margin-top: 1rem;
     }
 }
