@@ -6,7 +6,14 @@
         <button class="form-button crud">Remove</button>
     </div>
     <a class="form-button link add-new" href="/categories/forms/add">Add new exchange</a>
-    <input class="search-text" type="search" placeholder="Search records">
+    <div class="search-div">
+        <input id="search-txt" class="search-text" type="search" placeholder="Search records">
+        <select id="field">
+            <option disabled selected>Field</option>
+            <option>Name</option>
+            <option>Type</option>
+        </select>
+    </div>
     <div class="db-wrapper">
         <table class="db-table">
             <thead>
@@ -18,15 +25,13 @@
             </thead>
             <tbody id="data">
                 {% for row in results %}
-                {% set row = row._asdict() %}
-                <tr>
-                    <td class="checkbox-background"><input class="checkB"type="checkbox" name='{{row["id"]}}'></td>
-                    <td class="row-item-left border">{{row["name"]}}</td>
-                    <td class="row-item-left">{{row["type"]}}</td>
-                </tr>
-            {% endfor %}
-            <tr style="display: none;">
-            </tr>
+                    {% set row = row._asdict() %}
+                    <tr>
+                        <td class="checkbox-background"><input class="checkB" type="checkbox" name='{{row["id"]}}'></td>
+                        <td class="row-item-left border" headers="name">{{row["name"]}}</td>
+                        <td class="row-item-left" headers="type">{{row["type"]}}</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
