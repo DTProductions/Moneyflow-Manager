@@ -3,6 +3,7 @@ from flask_session import Session
 from datetime import timedelta
 from blueprints.auth import login_bp, register_bp
 from blueprints.overview import overview_bp
+from blueprints.categories import categories_bp
 
 app = Flask(__name__)
 
@@ -13,7 +14,9 @@ Session(app)
 
 app.register_blueprint(login_bp)
 app.register_blueprint(register_bp)
+
 app.register_blueprint(overview_bp)
+app.register_blueprint(categories_bp)
 
 @app.route("/")
 def index():

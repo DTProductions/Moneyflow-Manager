@@ -1,0 +1,34 @@
+{% extends "inner_page_template.html" %}
+{% block body %}
+<div class="spaced-body">
+    <div class="btn-align-div">
+        <button class="form-button crud">Update</button>
+        <button class="form-button crud">Remove</button>
+    </div>
+    <a class="form-button link add-new" href="/categories/forms/add">Add new exchange</a>
+    <input class="search-text" type="search" placeholder="Search records">
+    <div class="db-wrapper">
+        <table class="db-table">
+            <thead>
+                <tr class="table-top">
+                    <th class="checkbox-background"></th>
+                    <th class="left-tb-header border">Name</th>
+                    <th class="left-tb-header">Type</th>
+                </tr>
+            </thead>
+            <tbody id="data">
+                {% for row in results %}
+                {% set row = row._asdict() %}
+                <tr>
+                    <td class="checkbox-background"><input class="checkB"type="checkbox" name='{{row["id"]}}'></td>
+                    <td class="row-item-left border">{{row["name"]}}</td>
+                    <td class="row-item-left">{{row["type"]}}</td>
+                </tr>
+            {% endfor %}
+            <tr style="display: none;">
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
