@@ -217,6 +217,7 @@ tbody{
     }
     .search-text{
         height: 1rem;
+        text-align: center;
     }
     #field{
         grid-row: 5;
