@@ -1,0 +1,12 @@
+{% extends "header_form_template.html" %}
+{% block form %}
+    <form id="add_form" class="main-form">
+        <input class="form-item-text" type="text" placeholder="Name" name="name" autocomplete="off" autofocus="true">
+        <select class="form-dropdown" name="type">
+            <option disabled selected>Type</option>
+            <option>Income</option>
+            <option>Expense</option>
+        </select>
+    </form>
+    <button id="submit" onclick="" class="form-button">Add New Category</button>
+{% endblock %}

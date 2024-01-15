@@ -4,6 +4,10 @@ let field_dropdown;
 let rows;
 
 document.addEventListener("DOMContentLoaded", (Event) =>{
+    if(document.querySelector("#submit") != null){
+        document.querySelector("#submit").addEventListener("click", add_register);
+    }
+    
     rows = document.getElementById("data").querySelectorAll("tr");
     colorTable();
 
@@ -82,5 +86,22 @@ async function remove(){
     }
     else{
         location.reload();
+    }
+}
+
+async function add_register(){
+    const form = document.getElementById("add_form");
+    const form_data = new FormData(form);
+    let response = await fetch("/categories/add",{
+        method: "POST",
+        body: form_data
+    });
+
+    let json = await response.json();
+    if(json["status"] == "fail"){
+        alert(json["message"]);
+    }
+    else{
+        location.replace("/categories");
     }
 }
