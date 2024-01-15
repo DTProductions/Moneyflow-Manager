@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", (Event) =>{
     search_txt.addEventListener("keyup", search);
     search_txt.addEventListener("search", search);
     field_dropdown.addEventListener("change", search);
+    document.querySelector("#update").addEventListener("click", update);
+    document.querySelector("#remove").addEventListener("click", remove);
 });
 
 function colorTable(){
@@ -52,5 +54,33 @@ function search_by_text(header){
             rows[i].style.display = "table-row";
             check_box.disabled = false;
         }
+    }
+}
+
+async function remove(){
+    let selected_rows = [];
+    let check_boxes = document.getElementById("data").querySelectorAll(".checkB");
+    for(let i = 0; i < check_boxes.length; i++){
+        if(check_boxes[i].checked == true){
+            selected_rows.push(check_boxes[i].name);
+        }
+    }
+
+    json_params = JSON.stringify({"id" : selected_rows});
+
+    const response = await fetch("/categories/remove",{
+        method: "POST",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: json_params
+    });
+
+    let json = await response.json();
+    if(json["status"] == "fail"){
+        alert(json["message"]);
+    }
+    else{
+        location.reload();
     }
 }
