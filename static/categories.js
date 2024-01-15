@@ -4,12 +4,6 @@ let field_dropdown;
 let rows;
 
 document.addEventListener("DOMContentLoaded", (Event) =>{
-    if(document.querySelector("#submit") != null){
-        document.querySelector("#submit").addEventListener("click", ()=> {
-            add_register(document.getElementById("add_form"),"/categories/add", "/categories");
-        });
-    }
-    
     rows = document.getElementById("data").querySelectorAll("tr");
     colorTable();
 
