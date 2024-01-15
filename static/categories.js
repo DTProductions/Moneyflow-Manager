@@ -5,7 +5,9 @@ let rows;
 
 document.addEventListener("DOMContentLoaded", (Event) =>{
     if(document.querySelector("#submit") != null){
-        document.querySelector("#submit").addEventListener("click", add_register);
+        document.querySelector("#submit").addEventListener("click", ()=> {
+            add_register(document.getElementById("add_form"),"/categories/add", "/categories");
+        });
     }
     
     rows = document.getElementById("data").querySelectorAll("tr");
@@ -18,8 +20,11 @@ document.addEventListener("DOMContentLoaded", (Event) =>{
     search_txt.addEventListener("keyup", search);
     search_txt.addEventListener("search", search);
     field_dropdown.addEventListener("change", search);
+
     document.querySelector("#update").addEventListener("click", update);
-    document.querySelector("#remove").addEventListener("click", remove);
+    document.querySelector("#remove").addEventListener("click", ()=> {
+        remove(document.getElementById("data").querySelectorAll(".checkB"), "/categories/remove");
+    });
 });
 
 function colorTable(){
@@ -36,72 +41,10 @@ function colorTable(){
 function search(e){
     switch(field_dropdown.value){
         case "Name":
-            search_by_text("name");
+            search_by_text("name", rows, search_txt);
             break;
         case "Type":
-            search_by_text("type");
+            search_by_text("type", rows, search_txt);
             break;
-    }
-}
-
-function search_by_text(header){
-    for(let i = 0; i < rows.length; i++){
-        let data = rows[i].querySelector("[headers='" + header + "']");
-        let check_box = rows[i].querySelector(".checkB");
-
-        if(!data.innerHTML.toLowerCase().includes(search_txt.value.toLowerCase())){
-            rows[i].style.display = "none";
-            check_box.disabled = true;
-            check_box.checked = false;
-        }
-        else{
-            rows[i].style.display = "table-row";
-            check_box.disabled = false;
-        }
-    }
-}
-
-async function remove(){
-    let selected_rows = [];
-    let check_boxes = document.getElementById("data").querySelectorAll(".checkB");
-    for(let i = 0; i < check_boxes.length; i++){
-        if(check_boxes[i].checked == true){
-            selected_rows.push(check_boxes[i].name);
-        }
-    }
-
-    json_params = JSON.stringify({"id" : selected_rows});
-
-    const response = await fetch("/categories/remove",{
-        method: "POST",
-        headers:{
-            "Content-Type": "application/json"
-        },
-        body: json_params
-    });
-
-    let json = await response.json();
-    if(json["status"] == "fail"){
-        alert(json["message"]);
-    }
-    else{
-        location.reload();
-    }
-}
-
-async function add_register(){
-    const form = document.getElementById("add_form");
-    const form_data = new FormData(form);
-    let response = await fetch("/categories/add",{
-        method: "POST",
-        body: form_data
-    });
-
-    let json = await response.json();
-    if(json["status"] == "fail"){
-        alert(json["message"]);
-    }
-    else{
-        location.replace("/categories");
     }
 }
