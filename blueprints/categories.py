@@ -10,7 +10,8 @@ def categories():
     with db_engine.begin() as conn:
         query = select(transaction_categories_table).where(transaction_categories_table.c.user_id == session["user_id"])
         results = conn.execute(query)
-    return render_template("categories.html", results=results, fields=fields, title="Categories")
+    return render_template("categories.html", results=results, fields=fields, title="Categories",
+                           add_url="/categories/forms/add", has_date=False)
 
 
 @categories_bp.post("/categories/remove")

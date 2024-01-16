@@ -121,21 +121,22 @@ body{
 }
 
 /* Headers */
-.left-tb-header{
+.tb-header{
     font-size: 0.55rem;
-    text-align: left;
     width: 12rem;
     max-width: 12rem;
     padding: 0;
 }
-.left-tb-header.border{
-    font-size: 0.55rem;
+.tb-header.left{
     text-align: left;
-    width: 12rem;
-    max-width: 12rem;
+}
+.tb-header.left.border{
     padding-left: 0.2rem;
     padding-top: 0.075rem;
     padding-bottom: 0.075rem;
+}
+.tb-header.right{
+    text-align: right;
 }
 
 /* Table - General */

@@ -1,44 +1,31 @@
-{% extends "inner_page_template.html" %}
-{% block body %}
-<div class="spaced-body">
-    <div class="btn-align-div">
-        <button id="update" class="form-button crud">Update</button>
-        <button id="remove" class="form-button crud">Remove</button>
-    </div>
-    <a class="form-button link add-new" href="/categories/forms/add">Add new category</a>
-    <div class="search-div">
-        <input id="search-txt" class="search-text" type="search" placeholder="Search records">
-        <select id="field">
-            <option disabled selected>Field</option>
-            <option>Name</option>
-            <option>Type</option>
-        </select>
-    </div>
-    <div class="db-wrapper">
-        <form id="update_form" action="/categories/forms/update" method="post">
-            <input type="hidden" name= "id">
-            <input type="hidden" name="name">
-            <input type="hidden" name="category_type">
-        </form>
-        <table class="db-table">
-            <thead>
-                <tr class="table-top">
-                    <th class="checkbox-background"></th>
-                    <th class="left-tb-header border">Name</th>
-                    <th class="left-tb-header">Type</th>
-                </tr>
-            </thead>
-            <tbody id="data">
-                {% for row in results %}
-                    {% set row = row._asdict() %}
-                    <tr>
-                        <td class="checkbox-background"><input class="checkB" type="checkbox" name='{{row["id"]}}'></td>
-                        <td class="row-item-left border" headers="name">{{row["name"]}}</td>
-                        <td class="row-item-left" headers="type">{{row["type"]}}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+{% extends "crud_template.html" %}
+
+{% block options %}
+    <option disabled selected>Field</option>
+    <option>Name</option>
+    <option>Type</option>
+{% endblock %}
+
+{% block headers %}
+    <th class="tb-header left border">Name</th>
+    <th class="tb-header left">Type</th>
+{% endblock %}
+
+{% block update_form %}
+    <form id="update_form" action="/categories/forms/update" method="post">
+        <input type="hidden" name= "id">
+        <input type="hidden" name="name">
+        <input type="hidden" name="category_type">
+    </form>
+{% endblock %}
+
+{% block rows %}
+    {% for row in results %}
+        {% set row = row._asdict() %}
+        <tr>
+            <td class="checkbox-background"><input class="checkB" type="checkbox" name='{{row["id"]}}'></td>
+            <td class="row-item-left border" headers="name">{{row["name"]}}</td>
+            <td class="row-item-left" headers="type">{{row["type"]}}</td>
+        </tr>
+    {% endfor %}
 {% endblock %}
