@@ -153,11 +153,14 @@ tbody{
 .db-table{
     width: 100%;
     border-spacing: 0;
+    height: fit-content;
 }
 .db-wrapper{
     display: flex;
     grid-row: 3;
     grid-column: 1 / 4;
+    height: 66vh;
+    overflow: auto;
 }
 
 /* Table - Checkbox */
@@ -214,6 +217,8 @@ tbody{
     .db-wrapper{
         grid-row: 7;
         grid-column: 1;
+        height: fit-content;
+        overflow: unset;
     }
     .search-text{
         height: 1rem;
