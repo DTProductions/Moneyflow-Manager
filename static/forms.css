@@ -8,6 +8,13 @@ html{
     justify-content: center;
     height: 100vh;
     margin: 0;
+
+}
+.centered-form{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
 }
 .form-background{
     display: flex;
@@ -78,8 +85,55 @@ html{
     outline: 0.075rem solid #00d6d6;
     outline-offset: 0;
 }
+
+/* Table page form buttons */
+.form-button.link.add-new{
+    background-color: #A80093;
+    color: white;
+    height: 100%;
+    margin: 0;
+    width: 7rem;
+    min-width: 5rem;
+    grid-row: 2;
+}
+.form-button.link.add-new:active{
+    background-color: #8a0077;
+}
+.form-button.link.add-new:focus-visible{
+    outline: 0.075rem solid #063688;
+    outline-offset: 0;
+}
+.form-button.link.add-new:focus{
+    outline: 0.075rem solid #063688;
+}
+.form-button.crud{
+    background-color: #00225B;
+    color: white;
+    width: 100%;
+    height: fit-content;
+    font-size: 0.35rem;
+    padding: 0.15rem;
+    margin: 0;
+}
+.form-dropdown{
+    width: 7.5rem;
+    height: 1.75rem;
+    margin-top: 0.5rem;
+    text-align: center;
+    font-weight: normal;
+    font-size: 0.4rem;
+    color: #063688;
+}
+.form-dropdown:focus{
+    outline: 0.075rem solid #A80093;
+    outline-offset: 0;
+}
+
 @media screen and (max-width:350px) {
     html{
         font-size: 35px;
+    }
+    .centered-form{
+        margin-top: 1rem;
     }
 }

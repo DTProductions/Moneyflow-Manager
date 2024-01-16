@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--Fonts-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+        <!--Styles-->
+        <link rel="stylesheet" href="/static/forms.css">
+        <link rel="stylesheet" href="/static/inner_page.css">
+
+        <!--Scripts-->
+        <script src="/static/crud.js"></script>
+        <script src="/static/categories.js"></script>
+        
+        <!--General-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{title}}</title>
+    </head>
+    <body>
+        <nav class="top-bar">
+            <img class="logo" src="static/logo.png">
+            <div class="top-bar right">
+                <a class="top-bar link" href="/overview">Overview</a>
+                <a class="top-bar link" href="/categories">Categories</a>
+                <a class="top-bar link" href="/transactions">Transactions</a>
+                <a class="top-bar link" href="/exchanges">Exchanges</a>
+            </div>
+        </nav>
+        {% block body %}
+        {% endblock %}
+    </body>
+</html>
