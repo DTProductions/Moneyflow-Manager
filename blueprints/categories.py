@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, session, request
-from sqlalchemy import select, delete, insert, and_
+from sqlalchemy import select, delete, insert, and_, update
 from dbschema import db_engine, transaction_categories_table
-import json
 
 categories_bp = Blueprint("categories_bp", __name__)
 
@@ -15,7 +14,7 @@ def categories():
 
 
 @categories_bp.post("/categories/remove")
-def remove():
+def remove_category():
     ids = request.json["id"]
     if len(ids) == 0:
         return {"status" : "fail", "message" : "No rows selected"}
@@ -25,9 +24,9 @@ def remove():
             and_(transaction_categories_table.c.id.in_(ids),
                  transaction_categories_table.c.user_id == session["user_id"])
         )
-        deleted_rows = conn.execute(query).rowcount
+        deleted_rows_count = conn.execute(query).rowcount
 
-        if deleted_rows != len(ids):
+        if deleted_rows_count != len(ids):
             conn.rollback()
             return {"status" : "fail", "message" : "An error has occurred"}
 
@@ -40,7 +39,7 @@ def add_category_form():
 
 
 @categories_bp.post("/categories/add")
-def add():
+def add_category():
     name = request.form.get("name")
     category_type = request.form.get("type")
 
@@ -53,3 +52,32 @@ def add():
         query = insert(transaction_categories_table).values(user_id=session["user_id"], type=category_type, name=name)
         conn.execute(query)
     return {"status" : "success", "message" : "Category successfully added"}
+
+
+@categories_bp.post("/categories/forms/update")
+def update_category_form():
+    id = request.form.get("id")
+    name = request.form.get("name")
+    category_type = request.form.get("category_type")
+    return render_template("update_category.html", id=id, name=name, category_type=category_type, title="Update Category", form_title="Update Category")
+
+
+@categories_bp.post("/categories/update")
+def update_category():
+    id = request.form.get("id")
+    name = request.form.get("name")
+    category_type = request.form.get("type")
+
+    if category_type not in ["Income", "Expense"]:
+        return {"status" : "fail", "message" : "Invalid type"}
+    if not (id and name and category_type):
+        return {"status" : "fail", "message" : "Blank fields"}
+    
+    with db_engine.begin() as conn:
+        query = update(transaction_categories_table).values(type=category_type, name=name).where(and_(transaction_categories_table.c.id == id, transaction_categories_table.c.user_id == session["user_id"]))
+        updated_rows_count = conn.execute(query).rowcount
+
+        if updated_rows_count == 0:
+            return {"status" : "fail", "message" : "An error has occurred"}
+        
+    return {"status" : "success", "message" : "HA"}

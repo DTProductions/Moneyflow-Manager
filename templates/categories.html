@@ -15,6 +15,11 @@
         </select>
     </div>
     <div class="db-wrapper">
+        <form id="update_form" action="/categories/forms/update" method="post">
+            <input type="hidden" name= "id">
+            <input type="hidden" name="name">
+            <input type="hidden" name="category_type">
+        </form>
         <table class="db-table">
             <thead>
                 <tr class="table-top">
