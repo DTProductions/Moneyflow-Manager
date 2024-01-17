@@ -6,12 +6,11 @@ categories_bp = Blueprint("categories_bp", __name__)
 
 @categories_bp.route("/categories")
 def categories():
-    fields = ["Name", "Type"]
     with db_engine.begin() as conn:
         query = select(transaction_categories_table).where(transaction_categories_table.c.user_id == session["user_id"])
         results = conn.execute(query)
-    return render_template("categories.html", results=results, fields=fields, title="Categories",
-                           add_url="/categories/forms/add", has_date=False)
+    return render_template("categories.html", results=results, title="Categories",
+                           add_url="/categories/forms/add", has_date=False, add_btn_txt="Add new category")
 
 
 @categories_bp.post("/categories/remove")

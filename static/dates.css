@@ -1,0 +1,99 @@
+.dates-div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 0.35rem;
+    grid-row: 1;
+    grid-column: 3;
+    column-gap: 0.3rem;
+}
+.date-div{
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    column-gap: 0.1rem;
+}
+.date-text{
+    margin: 0;
+    white-space: nowrap;
+}
+.date{
+    height: fit-content;
+    font-size: 0.35rem;
+}
+@media screen and (max-width: 725px){
+    .spaced-body{
+        grid-template-columns: 7rem 0.5rem 1fr;
+        grid-template-rows: 0.7rem 0.4rem 1.8rem 0.4rem 1rem 0.4rem 1fr;
+        row-gap: 0;
+    }
+    .search-div{
+        grid-row: 5;
+        grid-column: 3;
+    }
+    .db-wrapper{
+        grid-row: 7;
+        grid-column: 1 / 4;
+    }
+    .form-button.link.add-new{
+        grid-row: 5;
+        grid-column: 1;
+    }
+    .dates-div{
+        grid-row: 3;
+        grid-column: 1;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .date-div{
+        justify-content:left;
+        width: 100%;
+        height: 0.7rem;
+    }
+    .date{
+        width: 100%;
+    }
+}
+@media screen and (max-width: 536px) {
+    .spaced-body{
+        grid-template-columns: 1fr;
+        grid-template-rows: 0.7rem 0.4rem 1.8rem 0.4rem 1rem 0.4rem 2.4rem 0.4rem 1fr;
+    }
+    .search-div{
+        flex-direction: column;
+        row-gap: 0.4rem;
+        grid-row: 7;
+        grid-column: 1;
+    }
+    .form-button.link.add-new{
+        grid-row: 5;
+        width: 100%;
+    }
+    .db-wrapper{
+        grid-row: 9;
+        grid-column: 1;
+        height: fit-content;
+        overflow: unset;
+        overflow-x: auto;
+    }
+    .search-text{
+        height: 1rem;
+        text-align: center;
+    }
+    #field{
+        width: 100%;
+        height: 1rem;
+        text-align: center;
+    }
+    .form-button.link.add-new{
+        grid-row: 5;
+        grid-column: 1;
+    }
+    .dates-div{
+        grid-row: 3;
+        grid-column: 1;
+    }
+    .date-div{
+        height: 0.7rem;
+    }
+}

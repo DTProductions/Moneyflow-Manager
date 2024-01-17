@@ -24,8 +24,8 @@
         {% set row = row._asdict() %}
         <tr>
             <td class="checkbox-background"><input class="checkB" type="checkbox" name='{{row["id"]}}'></td>
-            <td class="row-item-left border" headers="name">{{row["name"]}}</td>
-            <td class="row-item-left" headers="type">{{row["type"]}}</td>
+            <td class="row-item left border" headers="name">{{row["name"]}}</td>
+            <td class="row-item left" headers="type">{{row["type"]}}</td>
         </tr>
     {% endfor %}
 {% endblock %}

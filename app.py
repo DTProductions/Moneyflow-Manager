@@ -4,6 +4,7 @@ from datetime import timedelta
 from blueprints.auth import login_bp, register_bp
 from blueprints.overview import overview_bp
 from blueprints.categories import categories_bp
+from blueprints.transactions import transactions_bp
 
 app = Flask(__name__)
 
@@ -17,6 +18,8 @@ app.register_blueprint(register_bp)
 
 app.register_blueprint(overview_bp)
 app.register_blueprint(categories_bp)
+app.register_blueprint(transactions_bp)
+
 
 @app.route("/")
 def index():

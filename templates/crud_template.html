@@ -9,7 +9,9 @@
         <!--Styles-->
         <link rel="stylesheet" href="/static/forms.css">
         <link rel="stylesheet" href="/static/inner_page.css">
-
+        {% if has_date %}
+            <link rel="stylesheet" href="/static/dates.css">
+        {% endif %}
 
         <!--Scripts-->
         <script src="/static/crud.js"></script>
@@ -36,15 +38,18 @@
                 <button id="remove" class="form-button crud">Remove</button>
             </div>
             {% if has_date %}
-                <div>
-                    <p>Start date</p>
-                    <input type="date" name="start_date">
-                    <p>End date</p>
-                    <input type="date" name="end_date">
-                    <button>Reset dates</button>
+                <div class="dates-div">
+                    <div class="date-div">
+                        <p class="date-text">Start date:</p>
+                        <input type="date" id="start_date" class="date">
+                    </div>
+                    <div class="date-div" class="date_div">
+                        <p class="date-text">End date:</p>
+                        <input type="date" id="end_date" class="date">
+                    </div>
                 </div>
             {% endif %}
-            <a class="form-button link add-new" href="{{add_url}}">Add new category</a>
+            <a class="form-button link add-new" href="{{add_url}}">{{add_btn_txt}}</a>
             <div class="search-div">
                 <input id="search-txt" class="search-text" type="search" placeholder="Search records">
                 <select id="field">
@@ -55,7 +60,6 @@
             <div class="db-wrapper">
                 {% block update_form %}
                 {% endblock %}
-                </form>
                 <table class="db-table">
                     <thead>
                         <tr>
