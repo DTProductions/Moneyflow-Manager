@@ -15,7 +15,7 @@
     <form id="update_form" action="/categories/forms/update" method="post">
         <input type="hidden" name= "id">
         <input type="hidden" name="name">
-        <input type="hidden" name="category_type">
+        <input type="hidden" name="type">
     </form>
 {% endblock %}
 
@@ -23,7 +23,7 @@
     {% for row in results %}
         {% set row = row._asdict() %}
         <tr>
-            <td class="checkbox-background"><input class="checkB" type="checkbox" name='{{row["id"]}}'></td>
+            <td class="checkbox-background"><input class="checkB" type="checkbox" name="{{row['id']}}"></td>
             <td class="row-item left border" headers="name">{{row["name"]}}</td>
             <td class="row-item left" headers="type">{{row["type"]}}</td>
         </tr>

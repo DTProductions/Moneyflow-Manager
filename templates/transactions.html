@@ -21,7 +21,7 @@
         <input type="hidden" name="date">
         <input type="hidden" name="ammount">
         <input type="hidden" name="currency">
-        <input type="hidden" name="category_name">
+        <input type="hidden" name="category">
     </form>
 {% endblock %}
 
@@ -29,7 +29,7 @@
     {% for row in results %}
         {% set row = row._asdict() %}
         <tr>
-            <td class="checkbox-background"><input class="checkB" type="checkbox" name='{{row["id"]}}'></td>
+            <td class="checkbox-background"><input class="checkB" type="checkbox" name="{{row['id']}}"></td>
             <td class="row-item left border" headers="date">{{row["date"]}}</td>
             <td class="row-item left" headers="category">{{row["name"]}}</td>
             <td class="row-item left" headers="currency">{{row["currency"]}}</td>

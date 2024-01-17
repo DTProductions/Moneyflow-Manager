@@ -58,8 +58,8 @@ def add_category():
 def update_category_form():
     id = request.form.get("id")
     name = request.form.get("name")
-    category_type = request.form.get("category_type")
-    return render_template("update_category.html", id=id, name=name, category_type=category_type, title="Update Category", form_title="Update Category")
+    type = request.form.get("type")
+    return render_template("update_category.html", id=id, name=name, category_type=type, title="Update Category", form_title="Update Category")
 
 
 @categories_bp.post("/categories/update")
