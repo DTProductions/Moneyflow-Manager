@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, session, request
-from sqlalchemy import select, delete, insert, and_, update
+from sqlalchemy import select, delete, insert, and_, update, func
 from dbschema import db_engine, transaction_categories_table
 
 categories_bp = Blueprint("categories_bp", __name__)
@@ -47,6 +47,14 @@ def add_category():
         return {"status" : "fail", "message" : "Invalid type"}
     if not (name and category_type):
         return {"status" : "fail", "message" : "Blank fields"}
+    
+    with db_engine.begin() as conn:
+        query = select(func.count()).select_from(transaction_categories_table).where(
+                and_(transaction_categories_table.c.user_id==session["user_id"], transaction_categories_table.c.name==name)
+            )
+        count = conn.execute(query).scalar()
+        if count > 0:
+            return {"status" : "fail", "message" : "Name already registered"}
     
     with db_engine.begin() as conn:
         query = insert(transaction_categories_table).values(user_id=session["user_id"], type=category_type, name=name)
