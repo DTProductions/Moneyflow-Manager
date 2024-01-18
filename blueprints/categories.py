@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, session, request
-from sqlalchemy import select, delete, insert, and_, update
-from dbschema import db_engine, transaction_categories_table
+from sqlalchemy import select, delete, insert, and_, update, func
+from dbschema import db_engine, transaction_categories_table, transactions_table
 
 categories_bp = Blueprint("categories_bp", __name__)
 
@@ -19,6 +19,14 @@ def remove_category():
     if len(ids) == 0:
         return {"status" : "fail", "message" : "No rows selected"}
     
+    with db_engine.begin() as conn:
+        query = select(func.count()).select_from(transactions_table).where(
+                transactions_table.c.category_id.in_(ids)
+            )
+        count = conn.execute(query).scalar()
+        if count > 0:
+            return {"status" : "fail", "message" : "One of the selected categories is being used in a transaction"}
+        
     with db_engine.begin() as conn:
         query = delete(transaction_categories_table).where(
             and_(transaction_categories_table.c.id.in_(ids),
@@ -48,6 +56,9 @@ def add_category():
     if not (name and category_type):
         return {"status" : "fail", "message" : "Blank fields"}
     
+    if exists_in_db(name):
+        return {"status" : "fail", "message" : "Name already registered"}
+    
     with db_engine.begin() as conn:
         query = insert(transaction_categories_table).values(user_id=session["user_id"], type=category_type, name=name)
         conn.execute(query)
@@ -73,6 +84,9 @@ def update_category():
     if not (id and name and category_type):
         return {"status" : "fail", "message" : "Blank fields"}
     
+    if exists_in_db(name):
+        return {"status" : "fail", "message" : "Name already registered"}
+    
     with db_engine.begin() as conn:
         query = update(transaction_categories_table).values(type=category_type, name=name).where(and_(transaction_categories_table.c.id == id, transaction_categories_table.c.user_id == session["user_id"]))
         updated_rows_count = conn.execute(query).rowcount
@@ -80,4 +94,15 @@ def update_category():
         if updated_rows_count == 0:
             return {"status" : "fail", "message" : "An error has occurred"}
         
-    return {"status" : "success", "message" : "HA"}
+    return {"status" : "success", "message" : "Category successfully updated"}
+
+
+def exists_in_db(name):
+    with db_engine.begin() as conn:
+        query = select(func.count()).select_from(transaction_categories_table).where(
+                and_(transaction_categories_table.c.user_id==session["user_id"], transaction_categories_table.c.name==name)
+            )
+        count = conn.execute(query).scalar()
+        if count > 0:
+            return True
+        return False
