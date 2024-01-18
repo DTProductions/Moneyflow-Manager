@@ -33,7 +33,7 @@
             <td class="row-item left border" headers="date">{{row["date"]}}</td>
             <td class="row-item left" headers="category">{{row["name"]}}</td>
             <td class="row-item left" headers="currency">{{row["currency"]}}</td>
-            <td class="row-item right border" headers="ammount">{{row["ammount"]}}</td>
+            <td class="row-item right border" headers="ammount">{{format_money(row["ammount"])}}</td>
         </tr>
     {% endfor %}
 {% endblock %}
