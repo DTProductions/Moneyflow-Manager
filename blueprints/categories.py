@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, session, request
 from sqlalchemy import select, delete, insert, and_, update, func
-from dbschema import db_engine, transaction_categories_table
+from dbschema import db_engine, transaction_categories_table, transactions_table
 
 categories_bp = Blueprint("categories_bp", __name__)
 
@@ -19,6 +19,14 @@ def remove_category():
     if len(ids) == 0:
         return {"status" : "fail", "message" : "No rows selected"}
     
+    with db_engine.begin() as conn:
+        query = select(func.count()).select_from(transactions_table).where(
+                transactions_table.c.category_id.in_(ids)
+            )
+        count = conn.execute(query).scalar()
+        if count > 0:
+            return {"status" : "fail", "message" : "One of the selected categories is being used in a transaction"}
+        
     with db_engine.begin() as conn:
         query = delete(transaction_categories_table).where(
             and_(transaction_categories_table.c.id.in_(ids),
