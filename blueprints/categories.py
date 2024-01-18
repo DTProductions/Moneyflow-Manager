@@ -86,7 +86,7 @@ def update_category():
         if updated_rows_count == 0:
             return {"status" : "fail", "message" : "An error has occurred"}
         
-    return {"status" : "success", "message" : "HA"}
+    return {"status" : "success", "message" : "Category successfully updated"}
 
 
 def exists_in_db(name):
