@@ -24,7 +24,9 @@ html{
     background-color: #063688;
     border-radius: 1rem;
     width: 10rem;
-    height: 11rem;
+    height: fit-content;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 .main-form{
     height: fit-content;
@@ -127,6 +129,16 @@ html{
 .form-dropdown:focus{
     outline: 0.075rem solid #A80093;
     outline-offset: 0;
+}
+.form-date{
+    height: 1rem;
+    width: 7.5rem;
+    margin-top: 0.5rem;
+    text-align: center;
+    color: #063688;
+}
+.form-date:focus{
+    outline: 0.075rem solid #A80093
 }
 
 @media screen and (max-width:350px) {

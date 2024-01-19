@@ -7,22 +7,103 @@
  * @param {string} header 
  * @param {NodeListOf<HTMLTableRowElement>} rows
  * @param {HTMLInputElement}  search_txt
+ * @param {string} type 
  */
-function search_by_text(header, rows, search_txt){
+function search_by_type(header, rows, search_txt, type){
     for(let i = 0; i < rows.length; i++){
-        let data = rows[i].querySelector("[headers='" + header + "']");
+        let data = rows[i].querySelector("[headers='" + header + "']").innerHTML;
         let check_box = rows[i].querySelector(".checkB");
 
-        if(!data.innerHTML.toLowerCase().includes(search_txt.value.toLowerCase())){
-            rows[i].style.display = "none";
-            check_box.disabled = true;
-            check_box.checked = false;
+        if(!data_matches(data, type, search_txt.value)){
+            hide_row(rows[i], check_box);
         }
         else{
-            rows[i].style.display = "table-row";
-            check_box.disabled = false;
+            display_row(rows[i], check_box);
         }
     }
+}
+
+/**
+ * matches values in rows with search_txt value and make sure they are between the selected dates
+ * (which are ignored if no date is selected)
+ * @param {string} header 
+ * @param {NodeListOf<HTMLTableRowElement>} rows 
+ * @param {HTMLInputElement} search_txt 
+ * @param {string} type 
+ * @param {HTMLInputElement} start_date 
+ * @param {HTMLInputElement} end_date 
+ */
+function search_by_type_date(header, rows, search_txt, type, start_date, end_date){
+    for(let i = 0; i < rows.length; i++){
+        let data = rows[i].querySelector("[headers='" + header + "']").innerHTML;
+        let date = get_db_date_time(rows[i].querySelector("[headers='date']").innerHTML);
+        let check_box = rows[i].querySelector(".checkB");
+
+        if(!(data_matches(data, type, search_txt.value) && date_matches(date, new Date(start_date.value).getTime(), new Date(end_date.value).getTime()))){
+            hide_row(rows[i], check_box);
+        }
+        else{
+            display_row(rows[i], check_box);
+        }
+    }
+}
+
+function get_db_date_time(date_str){
+    date_str = date_str.split("/").reverse();
+    let new_str = date_str[0] + "-" + date_str[1] + "-" + date_str[2];
+    return new Date(new_str).getTime();
+}
+
+/**
+ * @param {string} data 
+ * @param {string} type 
+ * @param {string} search_key 
+ * @returns bool
+ */
+function data_matches(data, type, search_key){
+    switch(type){
+        case "number":
+            return data.toLowerCase().startsWith(search_key.toLowerCase());
+        case "string":
+            return data.toLowerCase().includes(search_key.toLowerCase());
+        case "date":
+            return true;
+        }
+    return false;
+}
+
+/**
+ * Check if date is between the start and end dates
+ * @param {number} date 
+ * @param {number} start_date 
+ * @param {number} end_date 
+ * @returns bool
+ */
+function date_matches(date, start_date, end_date){
+    if(isNaN(start_date) && isNaN(end_date)){
+        return true;
+    }
+    if(isNaN(start_date)){
+        return date <= end_date;
+    }
+    if(isNaN(end_date)){
+        return date >= start_date;
+    }
+    if(end_date < start_date){
+        return false;
+    }
+    return start_date <= date && date <= end_date;
+}
+
+function hide_row(row, check_box){
+    row.style.display = "none";
+    check_box.disabled = true;
+    check_box.checked = false;
+}
+
+function display_row(row, check_box){
+    row.style.display = "table-row";
+    check_box.disabled = false;
 }
 
 /**

@@ -1,0 +1,22 @@
+{% extends "header_form_template.html" %}
+{% block form %}
+    <form id="add_form" class="main-form">
+        <input type="date" placeholder="date" autofocus class="form-date" name="date">
+        <!--will we use dots or commas? Lets check it out-->
+        <input class="form-item-text" type="number" placeholder="Ammount" name="ammount" min="0.1">
+        <select class="form-dropdown" name="currency">
+            <option disabled selected>Currency</option>
+            <option>BRL</option>
+            <option>USD</option>
+            <option>EUR</option>
+            <option>GBP</option>
+        </select>
+        <select class="form-dropdown" name="category">
+            <option disabled selected>Category</option>
+            {% for category in categories %}
+                <option>{{category[0]}}</option>
+            {% endfor %}
+        </select>
+    </form>
+    <button id="submit" class="form-button">Add New Category</button>
+{% endblock %}

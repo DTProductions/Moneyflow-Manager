@@ -1,0 +1,39 @@
+{% extends "crud_template.html" %}
+
+{% block options %}
+    <option disabled selected>Field</option>
+    <option>Date</option>
+    <option>Category</option>
+    <option>Currency</option>
+    <option>Ammount</option>
+{% endblock %}
+
+{% block headers %}
+    <th class="tb-header left border">Date</th>
+    <th class="tb-header left">Category</th>
+    <th class="tb-header left">Currency</th>
+    <th class="tb-header right border">Ammount</th>
+{% endblock %}
+
+{% block update_form %}
+    <form id="update_form" action="/transactions/forms/update" method="post">
+        <input type="hidden" name="id">
+        <input type="hidden" name="date">
+        <input type="hidden" name="ammount">
+        <input type="hidden" name="currency">
+        <input type="hidden" name="category_name">
+    </form>
+{% endblock %}
+
+{% block rows %}
+    {% for row in results %}
+        {% set row = row._asdict() %}
+        <tr>
+            <td class="checkbox-background"><input class="checkB" type="checkbox" name="{{row['id']}}"></td>
+            <td class="row-item left border" headers="date">{{row["date"]}}</td>
+            <td class="row-item left" headers="category_name">{{row["name"]}}</td>
+            <td class="row-item left" headers="currency">{{row["currency"]}}</td>
+            <td class="row-item right border" headers="ammount">{{format_money(row["ammount"])}}</td>
+        </tr>
+    {% endfor %}
+{% endblock %}

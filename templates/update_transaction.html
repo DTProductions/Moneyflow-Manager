@@ -1,0 +1,22 @@
+{% extends "header_form_template.html" %}
+{% block form %}
+    <form id="add_form" class="main-form">
+        <input type="hidden" name="id" value="{{id}}">
+        <input type="date" placeholder="date" autofocus class="form-date" name="date" value="{{date}}">
+        <input class="form-item-text" type="number" placeholder="Ammount" name="ammount" min="0.1" value="{{ammount}}">
+        <select class="form-dropdown" name="currency">
+            <option disabled selected>Currency</option>
+            <option {% if currency == "BRL" %} selected {% endif %}>BRL</option>
+            <option {% if currency == "USD" %} selected {% endif %}>USD</option>
+            <option {% if currency == "EUR" %} selected {% endif %}>EUR</option>
+            <option {% if currency == "GBP" %} selected {% endif %}>GBP</option>
+        </select>
+        <select class="form-dropdown" name="category_name">
+            <option disabled selected>Category</option>
+            {% for category_item in categories %}
+                <option {% if category_name == category_item[0] %} selected {% endif %}>{{category_item[0]}}</option>
+            {% endfor %}
+        </select>
+    </form>
+    <button id="submit" class="form-button">Update Category</button>
+{% endblock %}

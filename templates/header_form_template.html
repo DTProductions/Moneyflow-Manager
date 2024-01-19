@@ -9,6 +9,9 @@
         <!--Styles-->
         <link rel="stylesheet" href="/static/inner_page.css">
         <link rel="stylesheet" href="/static/forms.css">
+        {% for style in styles %}
+            <link rel="stylesheet" href="{{style}}">
+        {% endfor %}
 
         <!--Scripts-->
         <script src="/static/crud.js"></script>

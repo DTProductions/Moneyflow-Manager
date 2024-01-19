@@ -111,29 +111,45 @@ body{
 }
 
 /* Rows */
-.row-item-left{
+.row-item{
     font-size: 0.5rem;
     height: 1rem;
     color: white;
 }
-.row-item-left.border{
+.row-item.left{
+    padding-left: 0.1rem;
+}
+.row-item.left.border{
     padding-left: 0.2rem;
+}
+.row-item.right{
+    text-align: right;
+}
+.row-item.right.border{
+    padding-right: 0.2rem;
 }
 
 /* Headers */
-.left-tb-header{
+.tb-header{
     font-size: 0.55rem;
-    text-align: left;
     width: 12rem;
     max-width: 12rem;
     padding: 0;
+    padding-left: 0.1rem;
 }
-.left-tb-header.border{
-    font-size: 0.55rem;
+.tb-header.left{
     text-align: left;
-    width: 12rem;
-    max-width: 12rem;
+}
+.tb-header.left.border{
     padding-left: 0.2rem;
+    padding-top: 0.075rem;
+    padding-bottom: 0.075rem;
+}
+.tb-header.right{
+    text-align: right;
+}
+.tb-header.right.border{
+    padding-right: 0.2rem;
     padding-top: 0.075rem;
     padding-bottom: 0.075rem;
 }
@@ -186,14 +202,6 @@ tbody{
     grid-template-columns: 7rem 0.5rem 3fr;
     grid-template-rows: 0.7rem 1rem 1fr;
     row-gap: 0.4rem;
-}
-
-/* Search - Date*/
-.dates-div{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    font-size: 0.5rem;
 }
 
 @media screen and (max-width: 536px) {

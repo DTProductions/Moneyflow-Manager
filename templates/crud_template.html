@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--Fonts-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+        <!--Styles-->
+        <link rel="stylesheet" href="/static/forms.css">
+        <link rel="stylesheet" href="/static/inner_page.css">
+        {% if has_date %}
+            <link rel="stylesheet" href="/static/dates.css">
+        {% endif %}
+
+        <!--Scripts-->
+        <script src="/static/crud.js"></script>
+        <script src="/static/utils.js"></script>
+        <script src="/static/crud_page.js"></script>
+        
+        <!--General-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{title}}</title>
+    </head>
+    <body>
+        <nav class="top-bar">
+            <img class="logo" src="static/logo.png">
+            <div class="top-bar right">
+                <a class="top-bar link" href="/overview">Overview</a>
+                <a class="top-bar link" href="/categories">Categories</a>
+                <a class="top-bar link" href="/transactions">Transactions</a>
+                <a class="top-bar link" href="/exchanges">Exchanges</a>
+            </div>
+        </nav>
+
+        <div class="spaced-body">
+            <div class="btn-align-div">
+                <button id="update" class="form-button crud">Update</button>
+                <button id="remove" class="form-button crud">Remove</button>
+            </div>
+            {% if has_date %}
+                <div class="dates-div">
+                    <div class="date-div">
+                        <p class="date-text">Start date:</p>
+                        <input type="date" id="start_date" class="date">
+                    </div>
+                    <div class="date-div" class="date_div">
+                        <p class="date-text">End date:</p>
+                        <input type="date" id="end_date" class="date">
+                    </div>
+                </div>
+            {% endif %}
+            <a class="form-button link add-new" href="{{add_url}}">{{add_btn_txt}}</a>
+            <div class="search-div">
+                <input id="search-txt" class="search-text" type="search" placeholder="Search records">
+                <select id="field">
+                    {% block options %}
+                    {% endblock %}
+                </select>
+            </div>
+            <div class="db-wrapper">
+                {% block update_form %}
+                {% endblock %}
+                <table class="db-table">
+                    <thead>
+                        <tr>
+                            <th class="checkbox-background"></th>
+                            {% block headers %}
+                            {% endblock %}
+                        </tr>
+                    </thead>
+                    <tbody id="data">
+                            {% block rows %}
+                            {% endblock %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
