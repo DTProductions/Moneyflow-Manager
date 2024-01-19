@@ -21,7 +21,7 @@
         <input type="hidden" name="date">
         <input type="hidden" name="ammount">
         <input type="hidden" name="currency">
-        <input type="hidden" name="category">
+        <input type="hidden" name="category_name">
     </form>
 {% endblock %}
 
@@ -31,7 +31,7 @@
         <tr>
             <td class="checkbox-background"><input class="checkB" type="checkbox" name="{{row['id']}}"></td>
             <td class="row-item left border" headers="date">{{row["date"]}}</td>
-            <td class="row-item left" headers="category">{{row["name"]}}</td>
+            <td class="row-item left" headers="category_name">{{row["name"]}}</td>
             <td class="row-item left" headers="currency">{{row["currency"]}}</td>
             <td class="row-item right border" headers="ammount">{{format_money(row["ammount"])}}</td>
         </tr>

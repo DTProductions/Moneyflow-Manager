@@ -14,6 +14,7 @@ def convert_money_input_to_db(number):
 # NOTE: returns a string
 def format_money(number):
     try:
-        return "{:_.2f}".format(number / 10**db_digits).replace(".", ",").replace("_", ".")
+        return "{:.2f}".format(number / 10**db_digits)
     except:
         return None
+    

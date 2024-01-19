@@ -10,3 +10,12 @@ def html_date_to_db(date):
         return date.strftime("%d/%m/%Y")
     except:
         return None
+
+
+# converts a database-compliant date into an html-compliant date
+def db_date_to_html(date):
+    try:
+        date = datetime.strptime(date, "%d/%m/%Y")
+        return date.strftime("%Y-%m-%d")
+    except:
+        return None
