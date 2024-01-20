@@ -51,7 +51,7 @@ def add_transaction():
     currency = request.form.get("currency")
     category = request.form.get("category")
 
-    if not (date and ammount and currency and category):
+    if not (date and ammount != None and currency and category):
         return {"status" : "fail", "message" : "Blank fields"}
     if ammount <= 0:
         return {"status" : "fail", "message" : "Non-positive ammount"}
