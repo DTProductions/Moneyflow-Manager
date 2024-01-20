@@ -41,7 +41,7 @@ def add_transaction_form():
                 transaction_categories_table.c.user_id == session["user_id"]
             )
         categories = conn.execute(query)
-    return render_template("add_transaction.html", form_title="Add new transaction", styles=["/static/transactions_form.css"], categories=categories)
+    return render_template("add_transaction.html", form_title="New Transaction", styles=["/static/transactions_form.css"], categories=categories, title="New Transaction")
 
 
 @transactions_bp.post("/transactions/add")

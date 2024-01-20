@@ -35,7 +35,7 @@ def remove_category():
 
 @categories_bp.route("/categories/forms/add")
 def add_category_form():
-    return render_template("add_category.html", title="New category", form_title="New Category")
+    return render_template("add_category.html", title="New Category", form_title="New Category")
 
 
 @categories_bp.post("/categories/add")
