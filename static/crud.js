@@ -67,8 +67,12 @@ function data_matches(data, type, search_key){
         case "string":
             return data.toLowerCase().includes(search_key.toLowerCase());
         case "date":
+            if(search_key != ""){
+                return data.toLowerCase().startsWith(search_key.toLowerCase());
+            }
             return true;
         }
+        
     return false;
 }
 

@@ -175,7 +175,8 @@ tbody{
     display: flex;
     grid-row: 3;
     grid-column: 1 / 4;
-    height: 66vh;
+    height: fit-content;
+    max-height: 66vh;
     overflow: auto;
 }
 
@@ -226,7 +227,7 @@ tbody{
         grid-row: 7;
         grid-column: 1;
         height: fit-content;
-        overflow: unset;
+        overflow-y: unset;
     }
     .search-text{
         height: 1rem;

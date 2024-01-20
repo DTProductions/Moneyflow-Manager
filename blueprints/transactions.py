@@ -3,6 +3,7 @@ from sqlalchemy import select, delete, insert, and_, update
 from dbschema import db_engine, transactions_table, transaction_categories_table
 from helpers.dates import html_date_to_db, db_date_to_html
 from helpers.currency import convert_money_input_to_db
+from helpers.db_operations import remove_records_safely
 
 
 transactions_bp = Blueprint("transactions_bp", __name__)
@@ -28,15 +29,8 @@ def remove_transaction():
     if len(ids) == 0:
         return {"status" : "fail", "message" : "No rows selected"}
     
-    with db_engine.begin() as conn:
-        query = delete(transactions_table).where(
-            and_(transactions_table.c.id.in_(ids), transactions_table.c.user_id == session["user_id"]))
-
-        deleted_rows_count = conn.execute(query).rowcount
-        if len(ids) != deleted_rows_count:
-            conn.rollback()
-            return {"status" : "fail", "message" : "An error has occurred"}
-        
+    if not remove_records_safely(ids, transactions_table, "id"):
+        return {"status" : "fail", "message" : "An error has occurred"}
     return {"status" : "success", "message" : "Rows deleted successfully"}
 
 
@@ -47,7 +41,7 @@ def add_transaction_form():
                 transaction_categories_table.c.user_id == session["user_id"]
             )
         categories = conn.execute(query)
-    return render_template("add_transaction.html", form_title="Add new transaction", styles=["/static/transactions_form.css"], categories=categories)
+    return render_template("add_transaction.html", form_title="New Transaction", styles=["/static/transactions_form.css"], categories=categories, title="New Transaction")
 
 
 @transactions_bp.post("/transactions/add")
@@ -57,7 +51,7 @@ def add_transaction():
     currency = request.form.get("currency")
     category = request.form.get("category")
 
-    if not (date and ammount and currency and category):
+    if not (date and ammount != None and currency and category):
         return {"status" : "fail", "message" : "Blank fields"}
     if ammount <= 0:
         return {"status" : "fail", "message" : "Non-positive ammount"}
@@ -93,7 +87,7 @@ def update_transaction_form():
                 transaction_categories_table.c.user_id==session["user_id"]
             )
         categories = conn.execute(query)
-    return render_template("update_transaction.html", title="Update transaction", form_title="Update transaction",
+    return render_template("update_transaction.html", title="Update Transaction", form_title="Update Transaction",
                            categories=categories, id=id, date=date, ammount=ammount, currency=currency, category_name=category_name,
                            styles=["/static/transactions_form.css"])
 
@@ -106,7 +100,7 @@ def update_transaction():
     currency = request.form.get("currency")
     category_name = request.form.get("category_name")
 
-    if not (id and date and ammount and currency and category_name):
+    if not (id and date and ammount != None and currency and category_name):
         return {"status" : "fail", "message" : "Blank fields"}
     if ammount <= 0:
         return {"status" : "fail", "message" : "Non positive ammount"}

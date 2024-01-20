@@ -2,8 +2,7 @@
 {% block form %}
     <form id="add_form" class="main-form">
         <input type="date" placeholder="date" autofocus class="form-date" name="date">
-        <!--will we use dots or commas? Lets check it out-->
-        <input class="form-item-text" type="number" placeholder="Ammount" name="ammount" min="0.1">
+        <input class="form-item-text" type="number" placeholder="Ammount" name="ammount">
         <select class="form-dropdown" name="currency">
             <option disabled selected>Currency</option>
             <option>BRL</option>
@@ -18,5 +17,5 @@
             {% endfor %}
         </select>
     </form>
-    <button id="submit" class="form-button">Add New Category</button>
+    <button id="submit" class="form-button" type="submit">Add New Transaction</button>
 {% endblock %}
