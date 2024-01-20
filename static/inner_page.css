@@ -227,7 +227,7 @@ tbody{
         grid-row: 7;
         grid-column: 1;
         height: fit-content;
-        overflow: unset;
+        overflow-y: unset;
     }
     .search-text{
         height: 1rem;
