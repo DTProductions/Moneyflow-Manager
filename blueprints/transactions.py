@@ -3,6 +3,7 @@ from sqlalchemy import select, delete, insert, and_, update
 from dbschema import db_engine, transactions_table, transaction_categories_table
 from helpers.dates import html_date_to_db, db_date_to_html
 from helpers.currency import convert_money_input_to_db
+from helpers.db_operations import remove_records_safely
 
 
 transactions_bp = Blueprint("transactions_bp", __name__)
@@ -28,15 +29,8 @@ def remove_transaction():
     if len(ids) == 0:
         return {"status" : "fail", "message" : "No rows selected"}
     
-    with db_engine.begin() as conn:
-        query = delete(transactions_table).where(
-            and_(transactions_table.c.id.in_(ids), transactions_table.c.user_id == session["user_id"]))
-
-        deleted_rows_count = conn.execute(query).rowcount
-        if len(ids) != deleted_rows_count:
-            conn.rollback()
-            return {"status" : "fail", "message" : "An error has occurred"}
-        
+    if not remove_records_safely(ids, transactions_table, "id"):
+        return {"status" : "fail", "message" : "An error has occurred"}
     return {"status" : "success", "message" : "Rows deleted successfully"}
 
 

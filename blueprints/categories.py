@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, session, request
 from sqlalchemy import select, delete, insert, and_, update, func
 from dbschema import db_engine, transaction_categories_table, transactions_table
+from helpers.db_operations import remove_records_safely
 
 categories_bp = Blueprint("categories_bp", __name__)
 
@@ -26,18 +27,9 @@ def remove_category():
         count = conn.execute(query).scalar()
         if count > 0:
             return {"status" : "fail", "message" : "One of the selected categories is being used in a transaction"}
-        
-    with db_engine.begin() as conn:
-        query = delete(transaction_categories_table).where(
-            and_(transaction_categories_table.c.id.in_(ids),
-                 transaction_categories_table.c.user_id == session["user_id"])
-        )
-        deleted_rows_count = conn.execute(query).rowcount
-
-        if deleted_rows_count != len(ids):
-            conn.rollback()
-            return {"status" : "fail", "message" : "An error has occurred"}
-
+    
+    if not remove_records_safely(ids, transaction_categories_table, "id"):
+        return {"status" : "fail", "message" : "An error has occurred"}
     return {"status" : "success", "message" : "Rows deleted successfully"}
 
 
