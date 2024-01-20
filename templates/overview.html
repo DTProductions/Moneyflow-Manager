@@ -1,4 +1,54 @@
-{% extends "inner_page_template.html" %}
-{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--Fonts-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-{% endblock %}
+        <!--Styles-->
+        <link rel="stylesheet" href="/static/inner_page.css">
+        <link rel="stylesheet" href="/static/overview.css">
+
+        <!--Scripts-->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+        <script src="/static/overview.js"></script>
+        
+        <!--General-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{title}}</title>
+    </head>
+    <body>
+        <nav class="top-bar">
+            <img class="logo" src="static/logo.png">
+            <div class="top-bar right">
+                <a class="top-bar link" href="/overview">Overview</a>
+                <a class="top-bar link" href="/categories">Categories</a>
+                <a class="top-bar link" href="/transactions">Transactions</a>
+                <a class="top-bar link" href="/exchanges">Exchanges</a>
+            </div>
+        </nav>
+        <div class="flex-vertical-center">
+            <select class="blue-dropdown">
+                {% for currency in currencies %}
+                    <option>{{currency}}</option>
+                {% endfor %}
+            </select>
+            <div class="flex-vertical-center upper_text">
+                <p class="total-upper center-text">Total: <strong id="total"></strong></p>
+            </div>
+            <div class="view">
+                <div class="view-content">
+                    <h1 class="chart-title center-text">Income</h1>
+                    <canvas id="income_chart"></canvas>
+                    <p class="total-text center-text">Total: <strong id="total_income"></strong></p>
+                </div>
+                <div class="view-content">
+                    <h1 class="chart-title center-text">Expenses</h1>
+                    <canvas id="expenses_chart"></canvas>
+                    <p class="total-text center-text">Total: <strong id="total_expenses"></strong></p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
