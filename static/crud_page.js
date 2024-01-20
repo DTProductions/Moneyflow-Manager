@@ -94,7 +94,7 @@ function search(dropdown, rows, search_txt, start_date, end_date){
             break;
         case "Date":
             header = "date";
-            type = "date_str";
+            type = "date";
             break;
         //exchanges
         case "Source Currency":
@@ -122,7 +122,7 @@ function search(dropdown, rows, search_txt, start_date, end_date){
             break;
     }
     
-    if(location.pathname == "/categories" || type == "date_str"){
+    if(location.pathname == "/categories"){
         search_by_type(header, rows, search_txt, type);
     }
     else{
