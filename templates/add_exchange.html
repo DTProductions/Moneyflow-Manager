@@ -1,0 +1,25 @@
+{% extends "header_form_template.html" %}
+{% block form %}
+    <form id="add_form" class="main-form">
+        <input type="date" placeholder="date" autofocus class="form-date" name="date">
+        <input class="form-item-text" type="number" placeholder="Source Ammount" name="source_ammount">
+        <input class="form-item-text" type="number" placeholder="Destination Ammount" name="destination_ammount">
+
+        <select class="form-dropdown" name="source_currency">
+            <option disabled selected>Source Currency</option>
+            <option>BRL</option>
+            <option>USD</option>
+            <option>EUR</option>
+            <option>GBP</option>
+        </select>
+
+        <select class="form-dropdown" name="destination_currency">
+            <option disabled selected>Destination Currency</option>
+            <option>BRL</option>
+            <option>USD</option>
+            <option>EUR</option>
+            <option>GBP</option>
+        </select>
+    </form>
+    <button id="submit" class="form-button">Add New Exchange</button>
+{% endblock %}
