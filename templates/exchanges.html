@@ -1,0 +1,43 @@
+{% extends "crud_template.html" %}
+
+{% block options %}
+    <option disabled selected>Field</option>
+    <option>Date</option>
+    <option>Source Currency</option>
+    <option>Source Ammount</option>
+    <option>Destination Currency</option>
+    <option>Destination Ammount</option>
+{% endblock %}
+
+{% block headers %}
+    <th class="tb-header left border">Date</th>
+    <th class="tb-header left">Source Currency</th>
+    <th class="tb-header left">Destination Currency</th>
+    <th class="tb-header right">Source Ammount</th>
+    <th class="tb-header right border">Destination Ammount</th>
+{% endblock %}
+
+{% block update_form %}
+    <form id="update_form" action="/exchanges/forms/update" method="post">
+        <input type="hidden" name="id">
+        <input type="hidden" name="date">
+        <input type="hidden" name="source_currency">
+        <input type="hidden" name="source_ammount">
+        <input type="hidden" name="destination_currency">
+        <input type="hidden" name="destination_ammount">
+    </form>
+{% endblock %}
+
+{% block rows %}
+    {% for row in results %}
+        {% set row = row._asdict() %}
+        <tr>
+            <td class="checkbox-background"><input class="checkB" type="checkbox" name="{{row['id']}}"></td>
+            <td class="row-item left border" headers="date">{{row["date"]}}</td>
+            <td class="row-item left" headers="source_currency">{{row["source_currency"]}}</td>
+            <td class="row-item left" headers="destination_currency">{{row["destination_currency"]}}</td>
+            <td class="row-item right" headers="source_ammount">{{format_money(row["source_ammount"])}}</td>
+            <td class="row-item right border" headers="destination_ammount">{{format_money(row["destination_ammount"])}}</td>
+        </tr>
+    {% endfor %}
+{% endblock %}

@@ -5,6 +5,7 @@ from blueprints.auth import login_bp, register_bp
 from blueprints.overview import overview_bp
 from blueprints.categories import categories_bp
 from blueprints.transactions import transactions_bp
+from blueprints.exchanges import exchanges_bp
 from helpers.currency import format_money
 
 app = Flask(__name__)
@@ -20,6 +21,7 @@ app.register_blueprint(register_bp)
 app.register_blueprint(overview_bp)
 app.register_blueprint(categories_bp)
 app.register_blueprint(transactions_bp)
+app.register_blueprint(exchanges_bp)
 
 @app.context_processor
 def utility_processor():

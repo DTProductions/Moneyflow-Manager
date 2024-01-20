@@ -175,7 +175,8 @@ tbody{
     display: flex;
     grid-row: 3;
     grid-column: 1 / 4;
-    height: 66vh;
+    height: fit-content;
+    max-height: 66vh;
     overflow: auto;
 }
 
