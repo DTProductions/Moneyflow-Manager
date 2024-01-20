@@ -87,7 +87,7 @@ def update_transaction_form():
                 transaction_categories_table.c.user_id==session["user_id"]
             )
         categories = conn.execute(query)
-    return render_template("update_transaction.html", title="Update transaction", form_title="Update transaction",
+    return render_template("update_transaction.html", title="Update Transaction", form_title="Update Transaction",
                            categories=categories, id=id, date=date, ammount=ammount, currency=currency, category_name=category_name,
                            styles=["/static/transactions_form.css"])
 
@@ -100,7 +100,7 @@ def update_transaction():
     currency = request.form.get("currency")
     category_name = request.form.get("category_name")
 
-    if not (id and date and ammount and currency and category_name):
+    if not (id and date and ammount != None and currency and category_name):
         return {"status" : "fail", "message" : "Blank fields"}
     if ammount <= 0:
         return {"status" : "fail", "message" : "Non positive ammount"}
