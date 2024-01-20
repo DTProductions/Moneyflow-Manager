@@ -1,0 +1,26 @@
+{% extends "header_form_template.html" %}
+{% block form %}
+    <form id="add_form" class="main-form">
+        <input type="hidden" name="id" value="{{id}}">
+        <input type="date" placeholder="date" autofocus class="form-date" name="date" value="{{date}}">
+        <input class="form-item-text" type="number" placeholder="Source Ammount" name="source_ammount" value="{{source_ammount}}">
+        <input class="form-item-text" type="number" placeholder="Destination Ammount" name="destination_ammount" value="{{destination_ammount}}">
+
+        <select class="form-dropdown" name="source_currency">
+            <option disabled selected>Source Currency</option>
+            <option {% if source_currency == "BRL" %} selected {% endif %}>BRL</option>
+            <option {% if source_currency == "USD" %} selected {% endif %}>USD</option>
+            <option {% if source_currency == "EUR" %} selected {% endif %}>EUR</option>
+            <option {% if source_currency == "GBP" %} selected {% endif %}>GBP</option>
+        </select>
+
+        <select class="form-dropdown" name="destination_currency">
+            <option disabled selected>Source Currency</option>
+            <option {% if destination_currency == "BRL" %} selected {% endif %}>BRL</option>
+            <option {% if destination_currency == "USD" %} selected {% endif %}>USD</option>
+            <option {% if destination_currency == "EUR" %} selected {% endif %}>EUR</option>
+            <option {% if destination_currency == "GBP" %} selected {% endif %}>GBP</option>
+        </select>
+    </form>
+    <button id="submit" class="form-button">Update Exchange</button>
+{% endblock %}
