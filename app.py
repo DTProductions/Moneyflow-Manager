@@ -7,6 +7,7 @@ from blueprints.categories import categories_bp
 from blueprints.transactions import transactions_bp
 from blueprints.exchanges import exchanges_bp
 from helpers.currency import format_money
+from helpers.dates import format_db_date
 
 app = Flask(__name__)
 
@@ -25,7 +26,7 @@ app.register_blueprint(exchanges_bp)
 
 @app.context_processor
 def utility_processor():
-    return dict(format_money=format_money)
+    return dict(format_money=format_money, format_db_date=format_db_date)
 
 @app.route("/")
 def index():
