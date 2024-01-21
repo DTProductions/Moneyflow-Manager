@@ -15,10 +15,8 @@ while start_date < current_date:
         eur = trunc(float(request.json()["usd"]["eur"]) * 10**6)
         gbp = trunc(float(request.json()["usd"]["gbp"]) * 10**6)
 
-        db_date = start_date.date().strftime("%d/%m/%Y")
-
         with db_engine.begin() as conn:
-            query = insert(historical_rates_table).values(date=db_date, brl=brl, eur=eur, gbp=gbp)
+            query = insert(historical_rates_table).values(date=request_date, brl=brl, eur=eur, gbp=gbp)
             conn.execute(query)
 
     start_date += timedelta(days=1)
