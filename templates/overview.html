@@ -16,7 +16,7 @@
         
         <!--General-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{{title}}</title>
+        <title>Overview</title>
     </head>
     <body>
         <nav class="top-bar">
@@ -29,23 +29,26 @@
             </div>
         </nav>
         <div class="flex-vertical-center">
-            <select class="blue-dropdown">
+            <select id="view_dropdown" class="blue-dropdown">
                 {% for currency in currencies %}
                     <option>{{currency}}</option>
                 {% endfor %}
+                {% for currency in currencies %}
+                    <option>{{currency + " Total"}}</option>
+                {% endfor %}
             </select>
             <div class="flex-vertical-center upper_text">
-                <p class="total-upper center-text">Total: <strong id="total"></strong></p>
+                <p id="total_str" class="total-upper center-text">Total: <strong id="total"></strong></p>
             </div>
             <div class="view">
                 <div class="view-content">
                     <h1 class="chart-title center-text">Income</h1>
-                    <canvas id="income_chart"></canvas>
+                    <canvas id="income_canvas"></canvas>
                     <p class="total-text center-text">Total: <strong id="total_income"></strong></p>
                 </div>
                 <div class="view-content">
                     <h1 class="chart-title center-text">Expenses</h1>
-                    <canvas id="expenses_chart"></canvas>
+                    <canvas id="expenses_canvas"></canvas>
                     <p class="total-text center-text">Total: <strong id="total_expenses"></strong></p>
                 </div>
             </div>

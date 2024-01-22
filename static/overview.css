@@ -46,3 +46,6 @@
     margin-bottom: 0;
     font-size: 0.6rem;
 }
+#total_str{
+    visibility: hidden;
+}

@@ -12,3 +12,10 @@ def remove_records_safely(ids, table, id):
             conn.rollback()
             return False
         return True
+
+
+def safe_dict_increment(dictionary, key, value):
+    if key in dictionary:
+        dictionary[key] += value
+    else:
+        dictionary[key] = value
