@@ -1,6 +1,8 @@
-from dbschema import db_engine
-from sqlalchemy import delete, and_
+from dbschema import db_engine, historical_rates_table, transactions_table
+from sqlalchemy import delete, and_, select, func
 from flask import session
+from datetime import datetime, timedelta, time
+from math import trunc
 
 # returns true if removal is allowed for the current user, false otherwise
 def remove_records_safely(ids, table, id):
@@ -19,3 +21,99 @@ def safe_dict_increment(dictionary, key, value):
         dictionary[key] += value
     else:
         dictionary[key] = value
+
+
+def oldest_historical_rate_date():
+    with db_engine.begin() as conn:
+        query = select(func.min(historical_rates_table.c.date).label("date"), historical_rates_table.c["brl", "eur", "gbp"]).select_from(historical_rates_table)
+        return conn.execute(query).first()._asdict()
+    
+
+def newest_historical_rate_date():
+    with db_engine.begin() as conn:
+        query = select(func.max(historical_rates_table.c.date).label("date"), historical_rates_table.c["brl", "eur", "gbp"]).select_from(historical_rates_table)
+        return conn.execute(query).first()._asdict()
+    
+
+# This function will throw an infinite loop if there is no record in the historical rates tables, be sure to keep
+# it filled!
+def get_closest_date_rates(date, oldest_date_record, newest_date_record):
+    offset = 1
+
+    date_dt_time = datetime.strptime(date, "%Y-%m-%d")
+
+    oldest_date = datetime.strptime(oldest_date_record["date"], "%Y-%m-%d")
+    newest_date = datetime.strptime(newest_date_record["date"], "%Y-%m-%d")
+
+    if date_dt_time <= oldest_date:
+        return oldest_date_record
+    elif date_dt_time >= newest_date:
+        return newest_date_record
+
+    while True:
+        with db_engine.begin() as conn:
+            query = select(func.count(), historical_rates_table).select_from(historical_rates_table).where(historical_rates_table.c.date == date)
+            results = conn.execute(query).first()
+            if results[0] == 1:
+                return results._asdict()
+            elif offset % 2 == 0:
+                date_dt_time -= timedelta(days=offset)
+            else:
+                date_dt_time += timedelta(days=offset)
+            offset += 1
+
+
+def dollar_based_conversion(src_curr, src_ammount, dest_curr, rates):
+    src_curr = src_curr.lower()
+    dest_curr = dest_curr.lower()
+    
+    if dest_curr == "usd":
+        return trunc((src_ammount / rates[src_curr]) * 10 ** 6)
+    if src_curr == "usd":
+        return trunc((src_ammount * rates[dest_curr]) / 10 ** 6)
+    
+    src_to_dollar = trunc((src_ammount / rates[src_curr]) * 10 ** 6)
+    return trunc((src_to_dollar * rates[dest_curr]) / 10 ** 6)
+
+
+def sum_dict_values(dictionary):
+    sum = 0
+    for key in dictionary:
+        sum += dictionary[key]
+    return sum
+
+
+# optimized SQL query for finding which currencies the user has transacted in
+def get_used_currencies():
+    with db_engine.begin() as conn:
+        query = select(transactions_table.c.currency).where(
+                    transactions_table.c.id.in_(
+                        select(transactions_table.c.id).where(
+                                and_(transactions_table.c.user_id == session["user_id"],
+                                     transactions_table.c.currency == "BRL")
+                        ).limit(1)
+                    ).__or__(
+                        transactions_table.c.id.in_(
+                            select(transactions_table.c.id).where(
+                                and_(transactions_table.c.user_id == session["user_id"],
+                                     transactions_table.c.currency == "USD")
+                            ).limit(1)
+                        )
+                    ).__or__(
+                        transactions_table.c.id.in_(
+                            select(transactions_table.c.id).where(
+                                and_(transactions_table.c.user_id == session["user_id"],
+                                     transactions_table.c.currency == "EUR")
+                            ).limit(1)
+                        )
+                    ).__or__(
+                        transactions_table.c.id.in_(
+                            select(transactions_table.c.id).where(
+                                and_(transactions_table.c.user_id == session["user_id"],
+                                     transactions_table.c.currency == "GBP")
+                            ).limit(1)
+                        )
+                    )
+                )
+        results = conn.execute(query)
+        return [row[0] for row in results]

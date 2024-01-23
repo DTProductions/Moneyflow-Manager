@@ -1,6 +1,7 @@
 from math import trunc
 
 db_digits = 4
+rate_digits = 6
 
 # converts user input into a database-compliant monetary value
 def convert_money_input_to_db(number):
