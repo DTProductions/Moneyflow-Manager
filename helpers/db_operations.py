@@ -60,6 +60,7 @@ def get_closest_date_rates(date, oldest_date_record, newest_date_record):
                 date_dt_time -= timedelta(days=offset)
             else:
                 date_dt_time += timedelta(days=offset)
+            date = date_dt_time.date().strftime("%Y-%m-%d")
             offset += 1
 
 
