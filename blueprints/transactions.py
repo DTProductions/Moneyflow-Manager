@@ -10,6 +10,9 @@ transactions_bp = Blueprint("transactions_bp", __name__)
 
 @transactions_bp.route("/transactions")
 def transactions():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     with db_engine.begin() as conn:
         query = select(transactions_table, transaction_categories_table.c["name"]).join(
                 transaction_categories_table,
@@ -25,6 +28,9 @@ def transactions():
 
 @transactions_bp.post("/transactions/remove")
 def remove_transaction():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     ids = request.json["id"]
     if len(ids) == 0:
         return {"status" : "fail", "message" : "No rows selected"}
@@ -36,6 +42,9 @@ def remove_transaction():
 
 @transactions_bp.route("/transactions/forms/add")
 def add_transaction_form():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     with db_engine.begin() as conn:
         query = select(transaction_categories_table.c.name).where(
                 transaction_categories_table.c.user_id == session["user_id"]
@@ -46,6 +55,9 @@ def add_transaction_form():
 
 @transactions_bp.post("/transactions/add")
 def add_transaction():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     date = validate_date(request.form.get("date"))
     ammount = convert_money_input_to_db(request.form.get("ammount"))
     currency = request.form.get("currency")
@@ -76,6 +88,9 @@ def add_transaction():
 
 @transactions_bp.post("/transactions/forms/update")
 def update_transaction_form():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     id = request.form.get("id")
     date = date_to_html(request.form.get("date"))
     ammount = request.form.get("ammount")
@@ -94,6 +109,9 @@ def update_transaction_form():
 
 @transactions_bp.post("/transactions/update")
 def update_transaction():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     id = request.form.get("id")
     date = validate_date(request.form.get("date"))
     ammount = convert_money_input_to_db(request.form.get("ammount"))

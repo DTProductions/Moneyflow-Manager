@@ -7,6 +7,9 @@ categories_bp = Blueprint("categories_bp", __name__)
 
 @categories_bp.route("/categories")
 def categories():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     with db_engine.begin() as conn:
         query = select(transaction_categories_table).where(transaction_categories_table.c.user_id == session["user_id"])
         results = conn.execute(query)
@@ -16,6 +19,9 @@ def categories():
 
 @categories_bp.post("/categories/remove")
 def remove_category():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     ids = request.json["id"]
     if len(ids) == 0:
         return {"status" : "fail", "message" : "No rows selected"}
@@ -35,11 +41,17 @@ def remove_category():
 
 @categories_bp.route("/categories/forms/add")
 def add_category_form():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     return render_template("add_category.html", title="New Category", form_title="New Category")
 
 
 @categories_bp.post("/categories/add")
 def add_category():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     name = request.form.get("name")
     category_type = request.form.get("type")
 
@@ -59,6 +71,9 @@ def add_category():
 
 @categories_bp.post("/categories/forms/update")
 def update_category_form():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     id = request.form.get("id")
     name = request.form.get("name")
     type = request.form.get("type")
@@ -67,6 +82,9 @@ def update_category_form():
 
 @categories_bp.post("/categories/update")
 def update_category():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     id = request.form.get("id")
     name = request.form.get("name")
     category_type = request.form.get("type")
@@ -76,7 +94,7 @@ def update_category():
     if not (id and name and category_type):
         return {"status" : "fail", "message" : "Blank fields"}
     
-    if exists_in_db(name):
+    if exists_in_db(name, id):
         return {"status" : "fail", "message" : "Name already registered"}
     
     with db_engine.begin() as conn:
@@ -89,10 +107,11 @@ def update_category():
     return {"status" : "success", "message" : "Category successfully updated"}
 
 
-def exists_in_db(name):
+def exists_in_db(name, id=-1):
     with db_engine.begin() as conn:
         query = select(func.count()).select_from(transaction_categories_table).where(
-                and_(transaction_categories_table.c.user_id==session["user_id"], transaction_categories_table.c.name==name)
+                and_(transaction_categories_table.c.user_id==session["user_id"], transaction_categories_table.c.name==name,
+                     transaction_categories_table.c.id != id)
             )
         count = conn.execute(query).scalar()
         if count > 0:

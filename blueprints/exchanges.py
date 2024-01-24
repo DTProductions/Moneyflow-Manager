@@ -10,6 +10,9 @@ exchanges_bp = Blueprint("exchanges_bp", __name__)
 
 @exchanges_bp.route("/exchanges")
 def exchanges():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     with db_engine.begin() as conn:
         query = select(exchanges_table).where(exchanges_table.c.user_id==session["user_id"])
         results = conn.execute(query)
@@ -20,6 +23,9 @@ def exchanges():
 
 @exchanges_bp.post("/exchanges/remove")
 def remove_exchange():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     ids = request.json["id"]
     if len(ids) == 0:
         return {"status" : "fail", "message" : "No rows selected"}
@@ -31,11 +37,17 @@ def remove_exchange():
 
 @exchanges_bp.route("/exchanges/forms/add")
 def add_exchange_form():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     return render_template("add_exchange.html", form_title="New Exchange", title="New Exchange", styles=["/static/exchanges_forms.css"])
 
 
 @exchanges_bp.post("/exchanges/add")
 def add_exchange():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     date = validate_date(request.form.get("date"))
     source_currency = request.form.get("source_currency")
     destination_currency = request.form.get("destination_currency")
@@ -59,6 +71,9 @@ def add_exchange():
 
 @exchanges_bp.post("/exchanges/forms/update")
 def update_exchange_form():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     id = request.form.get("id")
     date = date_to_html(request.form.get("date"))
     source_ammount = request.form.get("source_ammount")
@@ -73,6 +88,9 @@ def update_exchange_form():
 
 @exchanges_bp.post("/exchanges/update")
 def update_exchange():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+    
     id = request.form.get("id")
     date = validate_date(request.form.get("date"))
     source_ammount = convert_money_input_to_db(request.form.get("source_ammount"))

@@ -63,12 +63,12 @@ function get_db_date_time(date_str){
 function data_matches(data, type, search_key){
     switch(type){
         case "number":
-            return data.toLowerCase().startsWith(search_key.toLowerCase());
+            return data.replace(",", "").startsWith(search_key) || data.startsWith(search_key);
         case "string":
             return data.toLowerCase().includes(search_key.toLowerCase());
         case "date":
             if(search_key != ""){
-                return data.toLowerCase().startsWith(search_key.toLowerCase());
+                return data.startsWith(search_key);
             }
             return true;
         }

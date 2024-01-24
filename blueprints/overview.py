@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template, session
 from helpers.currency import format_money
 from helpers.db_operations import get_used_currencies
 from helpers.multiview import multiview_data
@@ -9,12 +9,18 @@ overview_bp = Blueprint("overview_bp", __name__)
 
 @overview_bp.route("/overview")
 def overview():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+
     currencies = get_used_currencies()
     return render_template("overview.html", currencies=currencies)
 
 
 @overview_bp.post("/overview")
 def calculate_overview_values():
+    if "user_id" not in session:
+        return render_template("error.html", code=401, message="Unauthorized access")
+
     selected_currency = request.json["selected_currency"]
     if not selected_currency:
         return {"status" : "fail", "message" : "Invalid currency"}
