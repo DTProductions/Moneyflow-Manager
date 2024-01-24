@@ -1,7 +1,7 @@
-from dbschema import db_engine, historical_rates_table, transactions_table
+from dbschema import db_engine, historical_rates_table, transactions_table, transaction_categories_table
 from sqlalchemy import delete, and_, select, func
 from flask import session
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
 from math import trunc
 
 # returns true if removal is allowed for the current user, false otherwise
@@ -14,13 +14,6 @@ def remove_records_safely(ids, table, id):
             conn.rollback()
             return False
         return True
-
-
-def safe_dict_increment(dictionary, key, value):
-    if key in dictionary:
-        dictionary[key] += value
-    else:
-        dictionary[key] = value
 
 
 def oldest_historical_rate_date():
@@ -63,27 +56,6 @@ def get_closest_date_rates(date, oldest_date_record, newest_date_record):
             date = date_dt_time.date().strftime("%Y-%m-%d")
             offset += 1
 
-
-def dollar_based_conversion(src_curr, src_ammount, dest_curr, rates):
-    src_curr = src_curr.lower()
-    dest_curr = dest_curr.lower()
-    
-    if dest_curr == "usd":
-        return trunc((src_ammount / rates[src_curr]) * 10 ** 6)
-    if src_curr == "usd":
-        return trunc((src_ammount * rates[dest_curr]) / 10 ** 6)
-    
-    src_to_dollar = trunc((src_ammount / rates[src_curr]) * 10 ** 6)
-    return trunc((src_to_dollar * rates[dest_curr]) / 10 ** 6)
-
-
-def sum_dict_values(dictionary):
-    sum = 0
-    for key in dictionary:
-        sum += dictionary[key]
-    return sum
-
-
 # optimized SQL query for finding which currencies the user has transacted in
 def get_used_currencies():
     with db_engine.begin() as conn:
@@ -118,3 +90,14 @@ def get_used_currencies():
                 )
         results = conn.execute(query)
         return [row[0] for row in results]
+
+
+def get_user_transactions():
+    with db_engine.begin() as conn:
+        query = select(transactions_table.c["ammount", "currency", "date"], transaction_categories_table.c["name", "type"]).join(
+                    transaction_categories_table,
+                    transaction_categories_table.c.id == transactions_table.c.category_id
+                ).where(
+                    transactions_table.c.user_id == session["user_id"]
+                )
+        return conn.execute(query)
