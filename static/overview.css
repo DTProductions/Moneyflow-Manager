@@ -49,3 +49,30 @@
 #total_str{
     visibility: hidden;
 }
+.canvas-div{
+    width: 50vw;
+    max-width: 12rem;
+    position: relative;
+}
+body{
+    margin-bottom: 1rem;
+    overflow-x: hidden;
+}
+.exchange-rate-impact-style{
+    display: none;
+    margin: 0;
+    margin-top:0.2rem;
+    font-size: 0.5rem;
+}
+@media screen and (max-width: 600px) {
+    .view{
+        flex-direction: column;
+        row-gap: 0.5rem;
+    }
+    .view-content{
+        align-items: center;
+    }
+    .canvas-div{
+        width: 100vw;
+    }
+}

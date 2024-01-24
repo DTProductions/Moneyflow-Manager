@@ -39,16 +39,21 @@
             </select>
             <div class="flex-vertical-center upper_text">
                 <p id="total_str" class="total-upper center-text">Total: <strong id="total"></strong></p>
+                <p class="exchange-rate-impact-style center-text">Exchange rate impact: <strong id="exchange_rate_impact"></strong></p>
             </div>
             <div class="view">
                 <div class="view-content">
                     <h1 class="chart-title center-text">Income</h1>
-                    <canvas id="income_canvas"></canvas>
+                    <div class="canvas-div">
+                        <canvas id="income_canvas"></canvas>
+                    </div>
                     <p class="total-text center-text">Total: <strong id="total_income"></strong></p>
                 </div>
                 <div class="view-content">
                     <h1 class="chart-title center-text">Expenses</h1>
-                    <canvas id="expenses_canvas"></canvas>
+                    <div class="canvas-div">
+                        <canvas id="expenses_canvas"></canvas>
+                    </div>
                     <p class="total-text center-text">Total: <strong id="total_expenses"></strong></p>
                 </div>
             </div>
