@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, session, request
 from sqlalchemy import select, delete, insert, and_, update
 from dbschema import db_engine, exchanges_table
-from helpers.dates import html_date_to_db, db_date_to_html
+from helpers.dates import date_to_html, validate_date
 from helpers.currency import convert_money_input_to_db
 from helpers.db_operations import remove_records_safely
 
@@ -36,7 +36,7 @@ def add_exchange_form():
 
 @exchanges_bp.post("/exchanges/add")
 def add_exchange():
-    date = html_date_to_db(request.form.get("date"))
+    date = validate_date(request.form.get("date"))
     source_currency = request.form.get("source_currency")
     destination_currency = request.form.get("destination_currency")
     source_ammount = convert_money_input_to_db(request.form.get("source_ammount"))
@@ -60,7 +60,7 @@ def add_exchange():
 @exchanges_bp.post("/exchanges/forms/update")
 def update_exchange_form():
     id = request.form.get("id")
-    date = db_date_to_html(request.form.get("date"))
+    date = date_to_html(request.form.get("date"))
     source_ammount = request.form.get("source_ammount")
     source_currency = request.form.get("source_currency")
     destination_ammount = request.form.get("destination_ammount")
@@ -74,7 +74,7 @@ def update_exchange_form():
 @exchanges_bp.post("/exchanges/update")
 def update_exchange():
     id = request.form.get("id")
-    date = html_date_to_db(request.form.get("date"))
+    date = validate_date(request.form.get("date"))
     source_ammount = convert_money_input_to_db(request.form.get("source_ammount"))
     source_currency = request.form.get("source_currency")
     destination_ammount = convert_money_input_to_db(request.form.get("destination_ammount"))
@@ -100,7 +100,6 @@ def update_exchange():
 def validate_exchange_input(date, source_currency, destination_currency, source_ammount, destination_ammount):
     if not (date and source_currency and destination_currency and source_ammount != None and destination_ammount != None):
         return {"status" : "fail", "message" : "Blank fields"}
-    
     if source_ammount <= 0 or destination_ammount <= 0:
         return {"status" : "fail", "message" : "Non-positive ammount"}
     if not (destination_currency in ["BRL", "USD", "EUR", "GBP"] and source_currency in ["BRL", "USD", "EUR", "GBP"]):

@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, session, request
 from sqlalchemy import select, delete, insert, and_, update
 from dbschema import db_engine, transactions_table, transaction_categories_table
-from helpers.dates import html_date_to_db, db_date_to_html
+from helpers.dates import date_to_html, validate_date
 from helpers.currency import convert_money_input_to_db
 from helpers.db_operations import remove_records_safely
 
@@ -46,7 +46,7 @@ def add_transaction_form():
 
 @transactions_bp.post("/transactions/add")
 def add_transaction():
-    date = html_date_to_db(request.form.get("date"))
+    date = validate_date(request.form.get("date"))
     ammount = convert_money_input_to_db(request.form.get("ammount"))
     currency = request.form.get("currency")
     category = request.form.get("category")
@@ -77,7 +77,7 @@ def add_transaction():
 @transactions_bp.post("/transactions/forms/update")
 def update_transaction_form():
     id = request.form.get("id")
-    date = db_date_to_html(request.form.get("date"))
+    date = date_to_html(request.form.get("date"))
     ammount = request.form.get("ammount")
     currency = request.form.get("currency")
     category_name = request.form.get("category_name")
@@ -95,7 +95,7 @@ def update_transaction_form():
 @transactions_bp.post("/transactions/update")
 def update_transaction():
     id = request.form.get("id")
-    date = html_date_to_db(request.form.get("date"))
+    date = validate_date(request.form.get("date"))
     ammount = convert_money_input_to_db(request.form.get("ammount"))
     currency = request.form.get("currency")
     category_name = request.form.get("category_name")
