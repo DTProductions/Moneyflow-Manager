@@ -3,8 +3,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
 });
 
 async function initialize_page(){
-    document.querySelector(".exchange-rate-impact-style").style.display = "none";
-
     let income_canvas = document.getElementById("income_canvas");
     let expenses_canvas = document.getElementById("expenses_canvas");
     let total_expenses = document.getElementById("total_expenses");
@@ -24,7 +22,7 @@ async function initialize_page(){
 
     let charts = await initialize_display(income_canvas, expenses_canvas, total, total_expenses, total_income, exchange_rate_impact, dropdown);
     dropdown.addEventListener("change", ()=>{
-        update_chart(charts[0], charts[1], total, total_expenses, total_income, exchange_rate_impact ,dropdown);
+        update_chart(charts[0], charts[1], total, total_expenses, total_income, exchange_rate_impact, dropdown);
     });
 }
 
