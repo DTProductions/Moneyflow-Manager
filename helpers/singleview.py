@@ -2,7 +2,7 @@ from dbschema import db_engine, transactions_table, transaction_categories_table
 from sqlalchemy import select, and_, or_
 from flask import session
 from helpers.dicts import safe_dict_increment
-from helpers.currency import format_money
+from helpers.currency import format_money_values_dict
 
 
 def singleview_data(selected_currency):
@@ -30,10 +30,8 @@ def singleview_data(selected_currency):
                 total_expenses += transaction["ammount"]
                 safe_dict_increment(expenses, transaction["name"], transaction["ammount"])
 
-    for category in expenses:
-        expenses[category] = format_money(expenses[category])
-    for category in income:
-        income[category] = format_money(income[category])
+    format_money_values_dict(expenses)
+    format_money_values_dict(income)
 
     total_exchanges = calc_exchanges_singleview(selected_currency)
     total = total_income - total_expenses + total_exchanges

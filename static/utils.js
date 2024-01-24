@@ -13,12 +13,17 @@ function sendForm(rows, check_boxes, form, fields, id){
     let chk_count = 0;
     for(let i = 0; i < rows.length && chk_count < 2; i++){
         if(check_boxes[i].checked){
+
             for(let j = 0; j < fields.length; j++){
-                console.log(fields[j]);
-                form.querySelector("[name='" + fields[j] + "']").value = rows[i].querySelector("[headers='" + fields[j] +"']").innerHTML;
+                let field_value = rows[i].querySelector("[headers='" + fields[j] +"']").innerHTML;
+                if(fields[j] == "ammount" || fields[j] == "source_ammount" || fields[j] == "destination_ammount"){
+                    field_value = field_value.replace(",", "");
+                }
+                form.querySelector("[name='" + fields[j] + "']").value = field_value;
             }
             form.querySelector("[name='" + id + "']").value = check_boxes[i].name;
             chk_count++;
+            
         }
     }
 
