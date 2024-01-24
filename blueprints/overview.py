@@ -25,24 +25,28 @@ def calculate_overview_values():
     
     # single currency view
     if len(selected_currency) == 1:
-        single_view_data = calc_transactions_single_view(selected_currency[0])
-
-        exchanges_data = calc_exchanges_single_view(selected_currency[0])
-
-        single_view_data["total"] = single_view_data["total_income"] - single_view_data["total_expenses"] + exchanges_data["total_destination"] - exchanges_data["total_source"]
-
-        format_totals(single_view_data)
-        return single_view_data
+        return single_view_data(selected_currency)
     
     # multicurrency view
     if len(selected_currency) == 2:
         if selected_currency[1] == "Total":
             multiview_data = calc_transactions_multiview(selected_currency[0])
-            
+            multiview_data["exchange_rate_impact"] = format_money(multiview_data["exchange_rate_impact"])
             format_totals(multiview_data)
             return multiview_data
 
     return {"status" : "fail", "message" : "Invalid currency"}
+
+
+def single_view_data(selected_currency):
+    single_view_data = calc_transactions_single_view(selected_currency[0])
+
+    exchanges_data = calc_exchanges_single_view(selected_currency[0])
+
+    single_view_data["total"] = single_view_data["total_income"] - single_view_data["total_expenses"] + exchanges_data["total_destination"] - exchanges_data["total_source"]
+
+    format_totals(single_view_data)
+    return single_view_data
 
 
 def calc_transactions_single_view(selected_currency):
@@ -159,13 +163,16 @@ def calc_transactions_multiview(selected_currency):
     total_expenses = sum_dict_values(expenses)
     total_expenses *= -1
 
+    exchange_rate_impact = total - (total_income - total_expenses)
+
     format_money_values_dict(income)
     invert_value_signs(expenses)
     format_money_values_dict(expenses)
 
     return {"income_labels" : list(income.keys()), "income_data" : list(income.values()),
             "expenses_labels" : list(expenses.keys()), "expenses_data" : list(expenses.values()),
-            "total_income" : total_income, "total_expenses" : total_expenses, "total" : total}
+            "total_income" : total_income, "total_expenses" : total_expenses, "total" : total,
+            "exchange_rate_impact" : exchange_rate_impact}
 
 
 def increment_incomes_forex(totals, labels_dict, transaction, converted_ammount):
