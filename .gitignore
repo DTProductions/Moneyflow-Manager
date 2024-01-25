@@ -4,3 +4,4 @@ __pycache__/
 /moneyflow_manager.db
 flask_session/
 blueprints/__pycache__
+cron_log.txt
