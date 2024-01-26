@@ -1,5 +1,5 @@
 from flask import Blueprint, request, session, redirect, render_template
-from sqlalchemy import insert, select
+from sqlalchemy import insert, select, func
 from werkzeug.security import generate_password_hash, check_password_hash
 from dbschema import db_engine, users_table
 
@@ -44,7 +44,13 @@ def register():
             return render_template("error.html", code=400, message="Invalid email")
         if password != confirmation:
             return render_template("error.html", code=400, message="Passwords didn't match")
-        
+
+        with db_engine.begin() as conn:
+            query = select(func.count("*")).select_from(users_table).where(users_table.c.email == email)
+            count = conn.execute(query).scalar()
+            if count > 0:
+                return render_template("error.html", code=400, message="Email already registered")
+
         with db_engine.begin() as conn:
             query = insert(users_table).values(email=email, hash=generate_password_hash(password))
             conn.execute(query)
