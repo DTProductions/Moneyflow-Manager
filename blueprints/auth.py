@@ -4,8 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from dbschema import db_engine, users_table
 
 
-login_bp = Blueprint("login_bp", __name__)
-@login_bp.route("/login", methods=["GET","POST"])
+auth_bp = Blueprint("auth_bp", __name__)
+@auth_bp.route("/login", methods=["GET","POST"])
 def login():
     if request.method == "POST":
         email = request.form.get("email")
@@ -30,8 +30,7 @@ def login():
         return render_template("login.html", page_title="login", form_title="Moneyflow Manager")
 
 
-register_bp = Blueprint("register_bp", __name__)
-@register_bp.route("/register", methods=["GET", "POST"])
+@auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
         email = request.form.get("email")
