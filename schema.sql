@@ -35,7 +35,7 @@ CREATE TABLE exchanges(
     source_ammount INTEGER NOT NULL,
     destination_currency TEXT NOT NULL,
     destination_ammount INTEGER NOT NULL,
-    date TEXT NOT NULL,
+    date TEXT,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 CREATE INDEX exchanges_source_currency ON exchanges(source_currency);

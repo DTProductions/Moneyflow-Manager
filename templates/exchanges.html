@@ -33,7 +33,7 @@
         {% set row = row._asdict() %}
         <tr>
             <td class="checkbox-background"><input class="checkB" type="checkbox" name="{{row['id']}}"></td>
-            <td class="row-item left border" headers="date">{{format_db_date(row["date"])}}</td>
+            <td class="row-item left border" headers="date">{% if format_db_date(row["date"]) %}{{format_db_date(row["date"])}}{% endif %}</td>
             <td class="row-item left" headers="source_currency">{{row["source_currency"]}}</td>
             <td class="row-item left" headers="destination_currency">{{row["destination_currency"]}}</td>
             <td class="row-item right" headers="source_ammount">{{format_money(row["source_ammount"])}}</td>
