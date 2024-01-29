@@ -94,7 +94,7 @@ def get_used_currencies():
 
 def get_user_transactions():
     with db_engine.begin() as conn:
-        query = select(transactions_table.c["ammount", "currency", "date"], transaction_categories_table.c["name", "type"]).join(
+        query = select(transactions_table.c["amount", "currency", "date"], transaction_categories_table.c["name", "type"]).join(
                     transaction_categories_table,
                     transaction_categories_table.c.id == transactions_table.c.category_id
                 ).where(

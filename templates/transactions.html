@@ -5,21 +5,21 @@
     <option>Date</option>
     <option>Category</option>
     <option>Currency</option>
-    <option>Ammount</option>
+    <option>Amount</option>
 {% endblock %}
 
 {% block headers %}
     <th class="tb-header left border">Date</th>
     <th class="tb-header left">Category</th>
     <th class="tb-header left">Currency</th>
-    <th class="tb-header right border">Ammount</th>
+    <th class="tb-header right border">Amount</th>
 {% endblock %}
 
 {% block update_form %}
     <form id="update_form" action="/transactions/forms/update" method="post">
         <input type="hidden" name="id">
         <input type="hidden" name="date">
-        <input type="hidden" name="ammount">
+        <input type="hidden" name="amount">
         <input type="hidden" name="currency">
         <input type="hidden" name="category_name">
     </form>
@@ -33,7 +33,7 @@
             <td class="row-item left border" headers="date">{{format_db_date(row["date"])}}</td>
             <td class="row-item left" headers="category_name">{{row["name"]}}</td>
             <td class="row-item left" headers="currency">{{row["currency"]}}</td>
-            <td class="row-item right border" headers="ammount">{{format_money(row["ammount"])}}</td>
+            <td class="row-item right border" headers="amount">{{format_money(row["amount"])}}</td>
         </tr>
     {% endfor %}
 {% endblock %}

@@ -7,7 +7,7 @@ from helpers.currency import format_money_values_dict
 
 def singleview_data(selected_currency):
     with db_engine.begin() as conn:
-        query = select(transactions_table.c.ammount, transaction_categories_table.c["name", "type"]).join(
+        query = select(transactions_table.c.amount, transaction_categories_table.c["name", "type"]).join(
                     transaction_categories_table,
                     transaction_categories_table.c.id == transactions_table.c.category_id
                 ).where(
@@ -16,7 +16,7 @@ def singleview_data(selected_currency):
                 )
         transactions = conn.execute(query)
 
-        income = {} # key is the name of the category, value is the ammount
+        income = {} # key is the name of the category, value is the amount
         expenses = {} # same as income
         total_income = 0
         total_expenses = 0
@@ -24,11 +24,11 @@ def singleview_data(selected_currency):
         for transaction in transactions:
             transaction = transaction._asdict()
             if transaction["type"] == "Income":
-                total_income += transaction["ammount"]
-                safe_dict_increment(income, transaction["name"], transaction["ammount"])
+                total_income += transaction["amount"]
+                safe_dict_increment(income, transaction["name"], transaction["amount"])
             else:
-                total_expenses += transaction["ammount"]
-                safe_dict_increment(expenses, transaction["name"], transaction["ammount"])
+                total_expenses += transaction["amount"]
+                safe_dict_increment(expenses, transaction["name"], transaction["amount"])
 
     format_money_values_dict(expenses)
     format_money_values_dict(income)
@@ -56,8 +56,8 @@ def calc_exchanges_singleview(selected_currency):
         for exchange in exchanges:
             exchange = exchange._asdict()
             if exchange["source_currency"] == selected_currency:
-                total_exchanges -= exchange["source_ammount"]
+                total_exchanges -= exchange["source_amount"]
             else:
-                total_exchanges += exchange["destination_ammount"]
+                total_exchanges += exchange["destination_amount"]
     
     return total_exchanges

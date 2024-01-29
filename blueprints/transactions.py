@@ -59,14 +59,14 @@ def add_transaction():
         return render_template("error.html", code=401, message="Unauthorized access")
     
     date = validate_date(request.form.get("date"))
-    ammount = convert_money_input_to_db(request.form.get("ammount"))
+    amount = convert_money_input_to_db(request.form.get("amount"))
     currency = request.form.get("currency")
     category = request.form.get("category")
 
-    if not (date and ammount != None and currency and category):
+    if not (date and amount != None and currency and category):
         return {"status" : "fail", "message" : "Blank fields"}
-    if ammount <= 0:
-        return {"status" : "fail", "message" : "Non-positive ammount"}
+    if amount <= 0:
+        return {"status" : "fail", "message" : "Non-positive amount"}
     if currency not in ["BRL", "USD", "EUR", "GBP"]:
         return {"status" : "fail", "message" : "Invalid currency"}
     
@@ -80,7 +80,7 @@ def add_transaction():
             return {"status" : "fail", "message" : "Invalid category"}
         
     with db_engine.begin() as conn:
-        query = insert(transactions_table).values(user_id=session["user_id"], ammount=ammount, date=date, currency=currency, category_id=results.first()[0])
+        query = insert(transactions_table).values(user_id=session["user_id"], amount=amount, date=date, currency=currency, category_id=results.first()[0])
         conn.execute(query)
 
     return {"status" : "success"}
@@ -93,7 +93,7 @@ def update_transaction_form():
     
     id = request.form.get("id")
     date = date_to_html(request.form.get("date"))
-    ammount = request.form.get("ammount")
+    amount = request.form.get("amount")
     currency = request.form.get("currency")
     category_name = request.form.get("category_name")
 
@@ -103,7 +103,7 @@ def update_transaction_form():
             )
         categories = conn.execute(query)
     return render_template("update_transaction.html", title="Update Transaction", form_title="Update Transaction",
-                           categories=categories, id=id, date=date, ammount=ammount, currency=currency, category_name=category_name,
+                           categories=categories, id=id, date=date, amount=amount, currency=currency, category_name=category_name,
                            styles=["/static/transactions_form.css"])
 
 
@@ -114,14 +114,14 @@ def update_transaction():
     
     id = request.form.get("id")
     date = validate_date(request.form.get("date"))
-    ammount = convert_money_input_to_db(request.form.get("ammount"))
+    amount = convert_money_input_to_db(request.form.get("amount"))
     currency = request.form.get("currency")
     category_name = request.form.get("category_name")
 
-    if not (id and date and ammount != None and currency and category_name):
+    if not (id and date and amount != None and currency and category_name):
         return {"status" : "fail", "message" : "Blank fields"}
-    if ammount <= 0:
-        return {"status" : "fail", "message" : "Non positive ammount"}
+    if amount <= 0:
+        return {"status" : "fail", "message" : "Non positive amount"}
     if currency not in ["BRL", "USD", "EUR", "GBP"]:
         return {"status" : "fail", "message" : "Invalid currency"}
     
@@ -136,7 +136,7 @@ def update_transaction():
         
     with db_engine.begin() as conn:
         query = update(transactions_table).values(
-                    ammount=ammount, date=date, currency=currency, category_id=category_id
+                    amount=amount, date=date, currency=currency, category_id=category_id
                 ).where(
                     and_(transactions_table.c.id == id, transactions_table.c.user_id==session["user_id"])
                 )

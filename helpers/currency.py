@@ -20,16 +20,16 @@ def format_money(number):
         return None
 
 
-def dollar_based_conversion(src_curr, src_ammount, dest_curr, rates):
+def dollar_based_conversion(src_curr, src_amount, dest_curr, rates):
     src_curr = src_curr.lower()
     dest_curr = dest_curr.lower()
     
     if dest_curr == "usd":
-        return trunc((src_ammount / rates[src_curr]) * 10 ** rate_digits)
+        return trunc((src_amount / rates[src_curr]) * 10 ** rate_digits)
     if src_curr == "usd":
-        return trunc((src_ammount * rates[dest_curr]) / 10 ** rate_digits)
+        return trunc((src_amount * rates[dest_curr]) / 10 ** rate_digits)
     
-    src_to_dollar = trunc((src_ammount / rates[src_curr]) * 10 ** rate_digits)
+    src_to_dollar = trunc((src_amount / rates[src_curr]) * 10 ** rate_digits)
     return trunc((src_to_dollar * rates[dest_curr]) / 10 ** rate_digits)
 
 

@@ -3,7 +3,7 @@
     <form id="add_form" class="main-form">
         <input type="hidden" name="id" value="{{id}}">
         <input type="date" placeholder="date" autofocus class="form-date" name="date" value="{{date}}">
-        <input class="form-item-text" type="number" placeholder="Ammount" name="ammount" value="{{ammount}}">
+        <input class="form-item-text" type="number" placeholder="Amount" name="amount" value="{{amount}}">
         <select class="form-dropdown" name="currency">
             <option disabled selected>Currency</option>
             <option {% if currency == "BRL" %} selected {% endif %}>BRL</option>

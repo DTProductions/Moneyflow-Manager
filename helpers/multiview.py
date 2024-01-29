@@ -19,11 +19,11 @@ def multiview_data(selected_currency):
         transaction = transaction._asdict()
         if transaction["type"] == "Income":
             add_transaction_data_to_dicts(transaction, totals, income, oldest_date_record,
-                                          newest_date_record, selected_currency, transaction["ammount"])
+                                          newest_date_record, selected_currency, transaction["amount"])
         else:
             # expenses
             add_transaction_data_to_dicts(transaction, totals, expenses, oldest_date_record,
-                                          newest_date_record, selected_currency, -transaction["ammount"])
+                                          newest_date_record, selected_currency, -transaction["amount"])
 
     exchange_totals = calc_exchanges_multiview()
     add_exchanges_to_totals(totals, exchange_totals)
@@ -48,23 +48,23 @@ def multiview_data(selected_currency):
             "exchange_rate_impact" : exchange_rate_impact}
 
 
-def add_transaction_data_to_dicts(transaction, totals, income_expenses_dict, oldest_date_record, newest_date_record, selected_currency, ammount):
+def add_transaction_data_to_dicts(transaction, totals, income_expenses_dict, oldest_date_record, newest_date_record, selected_currency, amount):
     if transaction["currency"] != selected_currency:
-        safe_dict_increment(totals, transaction["currency"], ammount)
+        safe_dict_increment(totals, transaction["currency"], amount)
         
-        converted_ammount = get_converted_ammount(transaction["date"], transaction["currency"],
-                                                  ammount, selected_currency, oldest_date_record,
+        converted_amount = get_converted_amount(transaction["date"], transaction["currency"],
+                                                  amount, selected_currency, oldest_date_record,
                                                   newest_date_record)
         
-        safe_dict_increment(income_expenses_dict, transaction["name"], converted_ammount)
+        safe_dict_increment(income_expenses_dict, transaction["name"], converted_amount)
     else:
-        safe_dict_increment(totals, transaction["currency"], ammount)
-        safe_dict_increment(income_expenses_dict, transaction["name"], ammount)
+        safe_dict_increment(totals, transaction["currency"], amount)
+        safe_dict_increment(income_expenses_dict, transaction["name"], amount)
 
 
-def get_converted_ammount(date, src_curr, ammount, dest_curr, oldest_date_record, newest_date_record):
+def get_converted_amount(date, src_curr, amount, dest_curr, oldest_date_record, newest_date_record):
     rates = get_closest_date_rates(date, oldest_date_record, newest_date_record)
-    return dollar_based_conversion(src_curr, ammount, dest_curr, rates)
+    return dollar_based_conversion(src_curr, amount, dest_curr, rates)
 
 
 def add_exchanges_to_totals(totals, exchange_totals):
@@ -78,9 +78,9 @@ def add_exchanges_to_totals(totals, exchange_totals):
 def calc_rates_totals(totals, selected_currency, newest_date_record, oldest_date_record):
     for currency in totals:
         if currency != selected_currency:
-            converted_ammount = get_converted_ammount(newest_date_record["date"], currency, totals[currency],
+            converted_amount = get_converted_amount(newest_date_record["date"], currency, totals[currency],
                                                       selected_currency, oldest_date_record, newest_date_record)
-            totals[currency] = converted_ammount
+            totals[currency] = converted_amount
 
 
 def calc_exchanges_multiview():
@@ -94,7 +94,7 @@ def calc_exchanges_multiview():
 
         for exchange in exchanges:
             exchange = exchange._asdict()
-            safe_dict_increment(exchange_totals, exchange["source_currency"], -exchange["source_ammount"])
-            safe_dict_increment(exchange_totals, exchange["destination_currency"], exchange["destination_ammount"])
+            safe_dict_increment(exchange_totals, exchange["source_currency"], -exchange["source_amount"])
+            safe_dict_increment(exchange_totals, exchange["destination_currency"], exchange["destination_amount"])
     
     return exchange_totals

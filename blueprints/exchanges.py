@@ -51,18 +51,18 @@ def add_exchange():
     date = request.form.get("date")
     source_currency = request.form.get("source_currency")
     destination_currency = request.form.get("destination_currency")
-    source_ammount = convert_money_input_to_db(request.form.get("source_ammount"))
-    destination_ammount = convert_money_input_to_db(request.form.get("destination_ammount"))
+    source_amount = convert_money_input_to_db(request.form.get("source_amount"))
+    destination_amount = convert_money_input_to_db(request.form.get("destination_amount"))
     
-    situation = validate_exchange_input(date, source_currency, destination_currency, source_ammount, destination_ammount)
+    situation = validate_exchange_input(date, source_currency, destination_currency, source_amount, destination_amount)
     if situation["status"] == "fail":
         return situation
     
     with db_engine.begin() as conn:
         query = insert(exchanges_table).values(
                 user_id=session["user_id"], source_currency=source_currency,
-                source_ammount=source_ammount, destination_currency=destination_currency,
-                destination_ammount=destination_ammount, date=date
+                source_amount=source_amount, destination_currency=destination_currency,
+                destination_amount=destination_amount, date=date
             )
         conn.execute(query)
 
@@ -76,12 +76,12 @@ def update_exchange_form():
     
     id = request.form.get("id")
     date = date_to_html(request.form.get("date"))
-    source_ammount = request.form.get("source_ammount")
+    source_amount = request.form.get("source_amount")
     source_currency = request.form.get("source_currency")
-    destination_ammount = request.form.get("destination_ammount")
+    destination_amount = request.form.get("destination_amount")
     destination_currency = request.form.get("destination_currency")
-    return render_template("update_exchange.html", id=id, source_ammount=source_ammount,
-                           source_currency=source_currency,destination_ammount=destination_ammount,
+    return render_template("update_exchange.html", id=id, source_amount=source_amount,
+                           source_currency=source_currency,destination_amount=destination_amount,
                            destination_currency=destination_currency, date=date, title="Update Exchange",
                            form_title="Update Exchange", styles=["/static/exchanges_forms.css"])
 
@@ -93,18 +93,18 @@ def update_exchange():
     
     id = request.form.get("id")
     date = request.form.get("date")
-    source_ammount = convert_money_input_to_db(request.form.get("source_ammount"))
+    source_amount = convert_money_input_to_db(request.form.get("source_amount"))
     source_currency = request.form.get("source_currency")
-    destination_ammount = convert_money_input_to_db(request.form.get("destination_ammount"))
+    destination_amount = convert_money_input_to_db(request.form.get("destination_amount"))
     destination_currency = request.form.get("destination_currency")
 
-    situation = validate_exchange_input(date, source_currency, destination_currency, source_ammount, destination_ammount)
+    situation = validate_exchange_input(date, source_currency, destination_currency, source_amount, destination_amount)
     if situation["status"] == "fail":
         return situation
     
     with db_engine.begin() as conn:
-        query = update(exchanges_table).values(date=date, source_ammount=source_ammount,
-                source_currency=source_currency, destination_ammount=destination_ammount,
+        query = update(exchanges_table).values(date=date, source_amount=source_amount,
+                source_currency=source_currency, destination_amount=destination_amount,
                 destination_currency=destination_currency).where(
                     and_(exchanges_table.c.user_id == session["user_id"], exchanges_table.c.id == id)
                 )
@@ -115,15 +115,15 @@ def update_exchange():
     return {"status" : "success", "message" : "Exchange successfully updated"}
 
 
-def validate_exchange_input(date, source_currency, destination_currency, source_ammount, destination_ammount):
-    if not (source_currency and destination_currency and source_ammount != None and destination_ammount != None):
+def validate_exchange_input(date, source_currency, destination_currency, source_amount, destination_amount):
+    if not (source_currency and destination_currency and source_amount != None and destination_amount != None):
         return {"status" : "fail", "message" : "Blank fields"}
     if date:
         date = validate_date(date)
         if not date:
             return {"status" : "fail", "message" : "Invalid date"}
-    if source_ammount <= 0 or destination_ammount <= 0:
-        return {"status" : "fail", "message" : "Non-positive ammount"}
+    if source_amount <= 0 or destination_amount <= 0:
+        return {"status" : "fail", "message" : "Non-positive amount"}
     if not (destination_currency in ["BRL", "USD", "EUR", "GBP"] and source_currency in ["BRL", "USD", "EUR", "GBP"]):
         return {"status" : "fail", "message" : "Invalid currency"}
     return {"status" : "success"}

@@ -19,12 +19,12 @@ document.addEventListener("DOMContentLoaded", (Event) =>{
             set_remove_button_event(check_boxes, "/categories/remove");
             break;
         case "/transactions":
-            set_update_button_event(rows, check_boxes, form, ["date", "ammount", "currency", "category_name"], "id");
+            set_update_button_event(rows, check_boxes, form, ["date", "amount", "currency", "category_name"], "id");
             set_remove_button_event(check_boxes, "/transactions/remove");
             set_date_listening_events(field_dropdown, rows, search_txt, start_date, end_date);   
             break;
         case "/exchanges":
-            set_update_button_event(rows, check_boxes, form, ["date", "source_currency", "source_ammount", "destination_currency", "destination_ammount"], "id");
+            set_update_button_event(rows, check_boxes, form, ["date", "source_currency", "source_amount", "destination_currency", "destination_amount"], "id");
             set_remove_button_event(check_boxes, "/exchanges/remove");
             set_date_listening_events(field_dropdown, rows, search_txt, start_date, end_date);   
     }
@@ -88,8 +88,8 @@ function search(dropdown, rows, search_txt, start_date, end_date){
             header = "currency";
             type = "string";
             break;
-        case "Ammount":
-            header = "ammount";
+        case "Amount":
+            header = "amount";
             type = "number";
             break;
         case "Date":
@@ -101,16 +101,16 @@ function search(dropdown, rows, search_txt, start_date, end_date){
             header = "source_currency";
             type = "string";
             break;
-        case "Source Ammount":
-            header = "source_ammount";
+        case "Source Amount":
+            header = "source_amount";
             type = "number";
             break;
         case "Destination Currency":
             header = "destination_currency";
             type = "string";
             break;
-        case "Destination Ammount":
-            header = "destination_ammount";
+        case "Destination Amount":
+            header = "destination_amount";
             type = "number";
             break;
         default:

@@ -16,7 +16,7 @@ function sendForm(rows, check_boxes, form, fields, id){
 
             for(let j = 0; j < fields.length; j++){
                 let field_value = rows[i].querySelector("[headers='" + fields[j] +"']").innerHTML;
-                if(fields[j] == "ammount" || fields[j] == "source_ammount" || fields[j] == "destination_ammount"){
+                if(fields[j] == "amount" || fields[j] == "source_amount" || fields[j] == "destination_amount"){
                     field_value = field_value.replace(",", "");
                 }
                 form.querySelector("[name='" + fields[j] + "']").value = field_value;

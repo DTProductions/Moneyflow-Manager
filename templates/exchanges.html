@@ -4,17 +4,17 @@
     <option disabled selected>Field</option>
     <option>Date</option>
     <option>Source Currency</option>
-    <option>Source Ammount</option>
+    <option>Source Amount</option>
     <option>Destination Currency</option>
-    <option>Destination Ammount</option>
+    <option>Destination Amount</option>
 {% endblock %}
 
 {% block headers %}
     <th class="tb-header left border">Date</th>
     <th class="tb-header left">Source Currency</th>
     <th class="tb-header left">Destination Currency</th>
-    <th class="tb-header right">Source Ammount</th>
-    <th class="tb-header right border">Destination Ammount</th>
+    <th class="tb-header right">Source Amount</th>
+    <th class="tb-header right border">Destination Amount</th>
 {% endblock %}
 
 {% block update_form %}
@@ -22,9 +22,9 @@
         <input type="hidden" name="id">
         <input type="hidden" name="date">
         <input type="hidden" name="source_currency">
-        <input type="hidden" name="source_ammount">
+        <input type="hidden" name="source_amount">
         <input type="hidden" name="destination_currency">
-        <input type="hidden" name="destination_ammount">
+        <input type="hidden" name="destination_amount">
     </form>
 {% endblock %}
 
@@ -36,8 +36,8 @@
             <td class="row-item left border" headers="date">{% if format_db_date(row["date"]) %}{{format_db_date(row["date"])}}{% endif %}</td>
             <td class="row-item left" headers="source_currency">{{row["source_currency"]}}</td>
             <td class="row-item left" headers="destination_currency">{{row["destination_currency"]}}</td>
-            <td class="row-item right" headers="source_ammount">{{format_money(row["source_ammount"])}}</td>
-            <td class="row-item right border" headers="destination_ammount">{{format_money(row["destination_ammount"])}}</td>
+            <td class="row-item right" headers="source_amount">{{format_money(row["source_amount"])}}</td>
+            <td class="row-item right border" headers="destination_amount">{{format_money(row["destination_amount"])}}</td>
         </tr>
     {% endfor %}
 {% endblock %}

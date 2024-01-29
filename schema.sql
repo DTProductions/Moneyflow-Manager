@@ -8,7 +8,7 @@ CREATE UNIQUE INDEX users_email ON users(email);
 CREATE TABLE transactions(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
-    ammount INTEGER INTEGER NOT NULL,
+    amount INTEGER INTEGER NOT NULL,
     date TEXT NOT NULL,
     currency TEXT NOT NULL,
     category_id INTEGER NOT NULL,
@@ -32,9 +32,9 @@ CREATE TABLE exchanges(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     source_currency TEXT NOT NULL,
-    source_ammount INTEGER NOT NULL,
+    source_amount INTEGER NOT NULL,
     destination_currency TEXT NOT NULL,
-    destination_ammount INTEGER NOT NULL,
+    destination_amount INTEGER NOT NULL,
     date TEXT,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
