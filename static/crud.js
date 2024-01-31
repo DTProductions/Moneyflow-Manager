@@ -71,6 +71,8 @@ function data_matches(data, type, search_key){
                 return data.startsWith(search_key);
             }
             return true;
+        case "date_no_key":
+            return true;
         }
         
     return false;

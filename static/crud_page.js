@@ -118,7 +118,7 @@ function search(dropdown, rows, search_txt, start_date, end_date){
                 return;
             }
             header = "date";
-            type = "date";
+            type = "date_no_key";
             break;
     }
     
